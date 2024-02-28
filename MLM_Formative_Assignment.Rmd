@@ -1,0 +1,38 @@
+---
+title: "Title of your report"
+author: "fmcv76"
+date: "01/03/24"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include = FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Initial Data Loading and Checks 
+
+```{r include = FALSE}
+
+library(lme4)
+library(lmerTest)
+library(ggplot2)
+library(sjPlot)
+library(tidyverse)
+library(tinytex)
+library(wordcountaddin)
+
+# Load data 
+crt_data = read.csv("https://andygolightly.github.io/teaching/MATH43515/CRT.csv", header = TRUE)
+
+```
+
+```{r}
+
+# Check for NAs 
+colSums(is.na(crt_data))
+
+```

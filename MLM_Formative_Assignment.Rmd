@@ -25,12 +25,17 @@ library(tidyverse)
 library(tinytex)
 library(wordcountaddin)
 
-# Load data 
-crt_data = read.csv("https://andygolightly.github.io/teaching/MATH43515/CRT.csv", header = TRUE)
-
 ```
 
 ```{r}
+
+# Load data 
+crt_data = read.csv("https://andygolightly.github.io/teaching/MATH43515/CRT.csv", 
+                    header = TRUE)
+
+# Rename class 
+crt_data = crt_data %>% 
+  dplyr::rename(Class = class)
 
 # Check for NAs 
 colSums(is.na(crt_data))
@@ -40,9 +45,9 @@ colSums(is.na(crt_data))
 ## Introduction 
 
 - Randomised Control Trials (RCTs) are used to assess the effectiveness of an intervention. Individuals are randomly assigned to either the treatment or control group and this aims to prevent systematic differences between intervention groups with regards to both observables and unobservables, preventing selection into treatment bias. 
-- In an educational setting, it may be neither practical nor ethical to administer an intervention at the Pupil or Class level. Providing an intervention at the Pupil level may not be practical or ethical given it would be practically challenging and could be seen as immoral for a teacher to provide some Pupils within a single class with an intervention and not others. Providing an intervention at the Class level may be more practical than at the Pupil level but may still not be ethical as it could be seen as immoral for a School to provide Pupils in one Class with an intervention and not others. 
-- This is where Cluster Randomised Control Trials (CRCTs) are useful. A CRCT in an educational setting can allow for an intervention to be administered at the school level, with less practical and ethical issues. Schools are randomly assigned to either the treatment or control group. 
-- This report will assess the results of a 3-level educational CRCT. 20 schools were randomly assigned to either the control or treatment group, with the treatment group receiving an educational intervention to try and improve pupils test performance. Pupils test scores were calculated for 2 Classes per School, with test scores calculated both pre and post educational intervention. It is not clear how the initial 20 Schools were selected from the wider population of Schools in the country so there may be selection into experiment bias present. It is not clear whether any Pupils dropped out of the study or not so there may be selection into observation bias present, with evidence of this being the absence of Pupil IDs 256, 257 and 258. 
+- In an educational setting, it may be neither practical nor ethical to administer an intervention at the Pupil or Class level. Providing an intervention at the Pupil level may not be practical or ethical given it would be practically challenging and could be seen as immoral for a teacher to provide some Pupils within a single Class with an intervention and not others. Providing an intervention at the Class level may be more practical than at the Pupil level but may still not be ethical as it could be seen as immoral for a School to provide Pupils in one Class with an intervention and not others. 
+- This is where Cluster Randomised Control Trials (CRCTs) are useful. A CRCT in an educational setting can allow for an intervention to be administered at the School level, with less practical and ethical issues. Schools are randomly assigned to either the treatment or control group. 
+- This report will assess the results of a 3-level educational CRCT. 20 Schools were randomly assigned to either the control or treatment group, with the treatment group receiving an educational intervention to try and improve Pupils test performance. Pupils test scores were calculated for 2 Classes per School, with test scores calculated both pre and post educational intervention. It is not clear how the initial 20 Schools were selected from the wider population of Schools in the country so there may be selection into experiment bias present. It is not clear whether any Pupils dropped out of the study or not so there may be selection into observation bias present, with evidence of this being the absence of Pupil IDs 256, 257 and 258. 
 - The variables collected as part of the CRCT were:
   - __Pupil__ - Anonymised Pupil ID. 
   - __Class__ - Anonymised Class ID. 

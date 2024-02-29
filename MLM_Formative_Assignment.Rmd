@@ -33,9 +33,14 @@ library(wordcountaddin)
 crt_data = read.csv("https://andygolightly.github.io/teaching/MATH43515/CRT.csv", 
                     header = TRUE)
 
-# Rename class 
+# Preprocess data 
 crt_data = crt_data %>% 
-  dplyr::rename(Class = class)
+  dplyr::rename(Class = class) %>% 
+  dplyr::mutate(Pupil = as.factor(Pupil),
+                School = as.factor(School),
+                Intervention = as.factor(Intervention),
+                FSM = as.factor(FSM),
+                Class = as.factor(Class))
 
 # Check for NAs 
 colSums(is.na(crt_data))

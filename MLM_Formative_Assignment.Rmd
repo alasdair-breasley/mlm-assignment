@@ -63,6 +63,32 @@ colSums(is.na(crt_data))
   - __Pretest__ - A pre-intervention test score for each Pupil. 
   - __Posttest__ - A post-intervention test score for each Pupil. 
 
+#### Summary Statistics 
+
+```{r echo = FALSE}
+
+# Summary statistics 
+crt_data %>% 
+  dplyr::select(-c(Pupil, Class)) %>% 
+  dplyr::select(School, Intervention, FSM, Pretest, Posttest) %>% 
+  summary()
+
+```
+
+#### Pupils per School 
+
+```{r echo = FALSE}
+
+pps_df = as.data.frame(table(crt_data$School))
+
+names(pps_df) = c("School", "Pupils")
+
+print(pps_df, row.names = FALSE)
+
+```
+
+Note: There are no Pupils for Schools 18 or 19. 
+
 ```{r echo = FALSE}
 
 # Distribution of Pretest scores by intervention group histogram 
@@ -116,34 +142,6 @@ ggplot(crt_data, aes(x = Pretest, y = Posttest, colour = Intervention)) +
 - Note: Points at jittered in both the x and y direction to improve visibility. 
 - Grey area represents the 95% confidence interval. 
 - There is a moderate positive Spearman's correlation of `r pvp_cor` between Pretest and Posttest scores. Spearman's was used as Pretest does not appear to be normally distributed. 
-
-#### Summary Statistics 
-
-```{r echo = FALSE}
-
-# Summary statistics 
-crt_data %>% 
-  dplyr::select(-c(Pupil, Class)) %>% 
-  dplyr::select(School, Intervention, FSM, Pretest, Posttest) %>% 
-  summary()
-
-```
-
-\newpage
-
-#### Pupils per School 
-
-```{r echo = FALSE}
-
-pps_df = as.data.frame(table(crt_data$School))
-
-names(pps_df) = c("School", "Pupils")
-
-print(pps_df, row.names = FALSE)
-
-```
-
-Note: There are no Pupils for Schools 18 or 19. 
 
 ## Methods 
 

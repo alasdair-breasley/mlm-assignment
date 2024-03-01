@@ -99,6 +99,24 @@ ggplot(data = crt_data, aes(x = Posttest, fill = Intervention)) +
 
 - Posttest scores are higher across both the control and treatment group. The distribution of Posttest scores for the treatment group appears to be shifted to the right with higher scores on average and no longer follows a similar distribution to the control group (like Pretest). 
 
+```{r echo = FALSE}
+
+pvp_cor = round(cor(crt_data$Pretest, crt_data$Posttest, method = "pearson"), 2)
+
+# Pretest scores vs Postest scores scatter plot 
+ggplot(crt_data, aes(x = Pretest, y = Posttest)) +
+  geom_point() +
+  geom_smooth(formula = y ~ x, method = "lm", color = "blue", se = TRUE) +
+  scale_x_continuous(breaks = breaks_width(1)) +
+  scale_y_continuous(breaks = breaks_width(2)) +
+  labs(x = "Pretest Score", y = "Posttest Score", title = "Pretest Scores vs Posttest Scores") +
+  theme(panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5), axis.text = element_text(color = "black", size = 10),
+        axis.title = element_text(size = 12), plot.title = element_text(size = 12, face = "bold"))
+
+```
+
+- There is a moderate correlation of `r pvp_cor` between Pretest and Posttest scores. Grey area represents the 95% confidence interval. 
+
 #### Summary Statistics 
 
 ```{r echo = FALSE}

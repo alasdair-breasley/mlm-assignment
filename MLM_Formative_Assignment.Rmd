@@ -100,9 +100,10 @@ ggplot(data = crt_data, aes(x = Posttest, fill = Intervention)) +
 pvp_cor = round(cor(crt_data$Pretest, crt_data$Posttest, method = "spearman"), 2)
 
 # Pretest scores vs Postest scores scatter plot 
-ggplot(crt_data, aes(x = Pretest, y = Posttest)) +
-  geom_point() +
-  geom_smooth(formula = y ~ x, method = "lm", color = "blue", se = TRUE) +
+ggplot(crt_data, aes(x = Pretest, y = Posttest, colour = Intervention)) +
+  geom_point(size = 1.5, alpha = 0.5, position = position_jitter(width = 0.2, height = 0.2)) +
+  scale_colour_manual(values = c("1" = "red", "0" = "blue"), labels = c("1" = "Treatment Group", "0" = "Control Group"), guide_legend(title = "")) +
+  geom_smooth(formula = y ~ x, method = "lm", color = "black", se = TRUE) +
   scale_x_continuous(breaks = breaks_width(1)) +
   scale_y_continuous(breaks = breaks_width(2)) +
   labs(x = "Pretest Score", y = "Posttest Score", title = "Pretest Scores vs Posttest Scores") +
@@ -111,7 +112,10 @@ ggplot(crt_data, aes(x = Pretest, y = Posttest)) +
 
 ```
 
-- There is a moderate positive Spearman's correlation of `r pvp_cor` between Pretest and Posttest scores. Spearman's was used as Pretest does not appear to be normally distributed. Grey area represents the 95% confidence interval. 
+- Naive analysis at the Pupil level. 
+- Note: Points at jittered in both the x and y direction to improve visibility. 
+- Grey area represents the 95% confidence interval. 
+- There is a moderate positive Spearman's correlation of `r pvp_cor` between Pretest and Posttest scores. Spearman's was used as Pretest does not appear to be normally distributed. 
 
 #### Summary Statistics 
 

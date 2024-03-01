@@ -19,6 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(lme4)
 library(lmerTest)
+library(performance)
 library(ggplot2)
 library(scales)
 library(sjPlot)
@@ -63,7 +64,7 @@ colSums(is.na(crt_data))
   - __Pretest__ - A pre-intervention test score for each Pupil. 
   - __Posttest__ - A post-intervention test score for each Pupil. 
 
-#### Summary Statistics 
+__Summary Statistics__
 
 ```{r echo = FALSE}
 
@@ -75,7 +76,7 @@ crt_data %>%
 
 ```
 
-#### Pupils per School 
+__Pupils per School__
 
 ```{r echo = FALSE}
 
@@ -145,11 +146,74 @@ ggplot(crt_data, aes(x = Pretest, y = Posttest, colour = Intervention)) +
 
 ## Methods 
 
-- Multilevel models help solve the problem when analysing hierarchical data of lower-level-units belonging to the same upper-level-item being correlated. Multilevel models are appropriate for use in this case given the hierarchical structure of the data collected from the 3-level CRCT and the cluster randomisation used. In this context multilevel models can provide more accurate estimates of treatment effects than models which ignore the hierarchical data structure by accounting for the correlation within clusters. 
+- Multilevel models help solve the problem when analysing hierarchical data of lower-level-units belonging to the same upper-level-item being correlated. Multilevel models are appropriate for use in this case given the hierarchical structure of the data collected from the 3-level CRCT and the cluster randomisation used. In this context multilevel models can provide more accurate estimates of treatment effects than models which ignore the hierarchical data structure by accounting for the correlation within clusters (intra-class correlation). 
 - The 3-level structure of the data is as follows: Pupils nested within Classes nested within Schools. 
 - The covariates at the Pupil level are: FSM and Pretest. 
 - There are no covariates at the Class level. 
 - The covariate at the School level is: Intervention. 
+
+\newpage
+
+## Analysis 
+
+__2-Level Intercept-Only Model for School__
+
+```{r}
+
+# Fit intercept-only model with school 
+school_intercept_only_model = lmer(formula = Posttest ~ 1 + (1 | School), data = crt_data)
+
+summary(school_intercept_only_model)
+
+# Calculate ICC 
+icc(school_intercept_only_model)
+
+```
+
+- Intra-Class Correlation value of 0.244, and therefore 24.4% of the variation in Posttest scores can be explained by the School grouping structure. This is a relatively large ICC value in an educational setting and therefore the School grouping structure should be included in modelling. 
+
+ __3-Level Intercept-Only Model for School and Class__ 
+
+```{r}
+
+# Fit intercept-only model with classes nested within schools 
+school_class_intercept_only_model = lmer(formula = Posttest ~ 1 + (1 | School) + (1 | School : Class), data = crt_data)
+
+summary(school_class_intercept_only_model)
+
+# Calculate ICC 
+icc(school_class_intercept_only_model)
+
+```
+
+- Only a very small increase in ICC to 0.258 when adding Classes nested within Schools to the Intercept-Only Model, with 25.8% of the variation in Posttest scores explained by the Classes nested within Schools grouping structure. This relatively small increase in ICC, plus Schools only having 2 Classes per School (not robust to estimate the variance between Classes with so few data points) indicates that the Classes nested within Schools grouping structure should not be included in modelling. 
+
+__Manually Calculating ICC and VPC Values__
+
+```{r}
+
+# Extract summary of variances 
+var_summary = as.data.frame(VarCorr(school_class_intercept_only_model))
+
+sig = var_summary$vcov[3]  # Residual variance 
+
+sigv = var_summary$vcov[2] # RE variance for school 
+
+sigu = var_summary$vcov[1] # RE variance for class 
+
+totalvar = sum(var_summary$vcov) #total variance 
+
+vpc_school = round(100 * sigv / totalvar, 2)
+
+vpc_class = round(100 * sigu / totalvar, 2)
+
+icc_school = round(100 * sigv / totalvar, 2)
+
+icc_class = round(100 * (sigu + sigv) / totalvar, 2)
+
+```
+
+- There is a `r vpc_class`% response variation at the Class level and `r vpc_school`% at the School level. Variability between Schools is much more than between classes. The ICC for Class is `r icc_class`%, largely driven by the School level ICC of `r icc_school`%. Not sure exactly why ICC for 2-Level Intercept-Only Model above is different to icc_school here - because it didn't take into account Class hierarchy and some of the variance between Schools captured was actually the variance between Classes within Schools?
 
 ## Word Count
 

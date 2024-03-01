@@ -53,7 +53,7 @@ colSums(is.na(crt_data))
 - Randomised Control Trials (RCTs) are used to assess the effectiveness of an intervention. Individuals are randomly assigned to either the treatment or control group and this aims to prevent systematic differences between intervention groups with regards to both observables and unobservables, preventing selection into treatment bias. 
 - In an educational setting, it may be neither practical nor ethical to administer an intervention at the Pupil or Class level. Providing an intervention at the Pupil level may not be practical or ethical given it would be practically challenging and could be seen as immoral for a teacher to provide some Pupils within a single Class with an intervention and not others. Providing an intervention at the Class level may be more practical than at the Pupil level but may still not be ethical as it could be seen as immoral for a School to provide Pupils in one Class with an intervention and not others. 
 - This is where Cluster Randomised Control Trials (CRCTs) are useful. A CRCT in an educational setting can allow for an intervention to be administered at the School level, with less practical and ethical issues. Schools are randomly assigned to either the treatment or control group. 
-- This report will assess the results of a 3-level educational CRCT. 20 Schools were randomly assigned to either the control or treatment group, with the treatment group receiving an educational intervention to try and improve Pupils test performance. Pupils test scores were calculated for 2 Classes per School, with test scores calculated both pre and post educational intervention. It is not clear how the initial 20 Schools were selected from the wider population of Schools in the country so there may be selection into experiment bias present. It is not clear whether any Pupils dropped out of the study or not so there may be selection into observation bias present, with evidence of this being the absence of Pupil IDs 256, 257 and 258. 
+- This report will assess the results of a 3-level educational CRCT. 20 Schools were randomly assigned to either the control or treatment group, with the treatment group receiving an educational intervention to try and improve Pupils test performance. Pupils test scores were calculated for 2 Classes per School, with test scores calculated both pre and post educational intervention. It is not clear how the initial 20 Schools were selected from the wider population of Schools in the country so there may be selection into experiment bias present. It appears that some Schools and Pupils dropped out of the study so there may be selection into observation bias present, with evidence of this being the absence of School IDs 18 and 19, and Pupil IDs 256, 257 and 258. 
 - The variables collected as part of the CRCT were:
   - __Pupil__ - Anonymised Pupil ID. 
   - __Class__ - Anonymised Class ID. 
@@ -98,6 +98,34 @@ ggplot(data = crt_data, aes(x = Posttest, fill = Intervention)) +
 ```
 
 - Posttest scores are higher across both the control and treatment group. The distribution of Posttest scores for the treatment group appears to be shifted to the right with higher scores on average and no longer follows a similar distribution to the control group (like Pretest). 
+
+#### Summary Statistics 
+
+```{r echo = FALSE}
+
+# Summary statistics 
+crt_data %>% 
+  dplyr::select(-c(Pupil, Class)) %>% 
+  dplyr::select(School, Intervention, FSM, Pretest, Posttest) %>% 
+  summary()
+
+```
+
+\newpage
+
+#### Pupils per School 
+
+```{r echo = FALSE}
+
+pps_df = as.data.frame(table(crt_data$School))
+
+names(pps_df) = c("School", "Pupils")
+
+print(pps_df, row.names = FALSE)
+
+```
+
+Note: There are no Pupils for Schools 18 or 19. 
 
 ## Word Count
 

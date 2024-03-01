@@ -71,15 +71,33 @@ colSums(is.na(crt_data))
 
 # Distribution of Pretest scores by intervention group histogram 
 ggplot(data = crt_data, aes(x = Pretest, fill = Intervention)) +
-  geom_histogram(aes(y = ..count..), binwidth = 1, colour = "black", position = "identity", alpha = 0.3) +
+  geom_histogram(aes(y = after_stat(count)), binwidth = 1, colour = "black", position = "identity", alpha = 0.3) +
   scale_fill_manual(values = c("1" = "red", "0" = "blue")) +
   scale_x_continuous(breaks = breaks_width(1), minor_breaks = NULL) +
   scale_y_continuous(breaks = breaks_width(10)) +
-  labs(x = "Prestest Scores", y = "Count", title = "Distribution of Pretest Scores Overlaid by Intervention Group") +
-  theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.5), axis.text = element_text(color = "black", size = 12),
-        axis.title = element_text(size = 14), plot.title = element_text(size = 14, face = "bold"))
+  labs(x = "Pretest Scores", y = "Count", title = "Distribution of Pretest Scores Overlaid by Intervention Group") +
+  theme(panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5), axis.text = element_text(color = "black", size = 10),
+        axis.title = element_text(size = 12), plot.title = element_text(size = 12, face = "bold"))
 
 ```
+
+- There is a similar distribution of Pretest scores for both the control and treatment groups with slightly more Pupils in the treatment group. 
+
+```{r}
+
+# Distribution of Posttest scores by intervention group histogram 
+ggplot(data = crt_data, aes(x = Posttest, fill = Intervention)) +
+  geom_histogram(aes(y = after_stat(count)), binwidth = 4, colour = "black", position = "identity", alpha = 0.3) +
+  scale_fill_manual(values = c("1" = "red", "0" = "blue")) +
+  scale_x_continuous(breaks = breaks_width(4), minor_breaks = NULL) +
+  scale_y_continuous(breaks = breaks_width(10)) +
+  labs(x = "Posttest Scores", y = "Count", title = "Distribution of Posttest Scores Overlaid by Intervention Group") +
+  theme(panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5), axis.text = element_text(color = "black", size = 10),
+        axis.title = element_text(size = 12), plot.title = element_text(size = 12, face = "bold"))
+
+```
+
+- Posttest scores are higher across both the control and treatment group. The distribution of Posttest scores for the treatment group appears to be shifted to the right with higher scores on average and no longer follows a similar distibution to the control group (like Pretest). 
 
 ## Word Count
 

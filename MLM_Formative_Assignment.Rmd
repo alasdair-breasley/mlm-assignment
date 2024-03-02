@@ -349,11 +349,22 @@ cor(residuals_1_to_n_minus_1, residuals_2_to_n)
 ```{r}
 
 qqnorm(resid(random_intercept_Pretest_Intervention_model))
+
 qqline(resid(random_intercept_Pretest_Intervention_model), col = "red") 
 
 ```
 
-- __Normality Assumption__ - The residuals mostly fit well with the theoretical quantiles of a normal distribution with only a slight deviation at each tail, therefore the assumption of normally distributed residuals plausibly holds. 
+- __Normality Assumption - Residuals__ - The residuals mostly fit well with the theoretical quantiles of a normal distribution with only a slight deviation at each tail, therefore the assumption of normally distributed residuals plausibly holds. 
+
+```{r}
+
+qqnorm(ranef(random_intercept_Pretest_Intervention_model)$School[, 1])
+
+qqline(ranef(random_intercept_Pretest_Intervention_model)$School[, 1], col = "red")
+
+```
+
+- __Normality Assumption - Random Effects__ - The random effects for School mostly fit well with the theoretical quantiles of a normal distribution with a small deviation at each tail, therefore the assumption of normally distributed random effects plausibly holds. 
 
 ## Word Count
 

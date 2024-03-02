@@ -1,5 +1,5 @@
 ---
-title: "Title of your report"
+title: "Assessing the Impact of an Eductional Intervention Using a 3-Level Cluster Randomised Control Trial"
 author: "fmcv76"
 date: "01/03/24"
 output:
@@ -63,6 +63,7 @@ colSums(is.na(crt_data))
   - __FSM__ - Flag indicating whether a Pupil is eligible for free school meals. 
   - __Pretest__ - A pre-intervention test score for each Pupil. 
   - __Posttest__ - A post-intervention test score for each Pupil. 
+- Research Question: Does the educational "Intervention" have a significant impact on student attainment? 
 
 __Summary Statistics__
 

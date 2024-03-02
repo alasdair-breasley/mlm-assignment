@@ -321,6 +321,40 @@ ranova(random_intercept_Pretest_Intervention_slope_model)
 
 - The null hypothesis is retained and the random slope for Intervention is not needed. 
 
+__Model Diagnostics__
+
+```{r}
+
+plot(random_intercept_Pretest_Intervention_model)
+
+```
+
+- __Linearity Assumption__ - Points spread roughly evenly above and below the 0 line with no obvious pattern, therefore the assumption of a linear relationship between predictor variables and the response variable plausibly holds. 
+- __Homoscedasticity Assumption__ - There is not an obvious change in spread for the residuals over the range of fitted values, therefore the assumption of residuals having constant variance across different values of the response variable plausibly holds. 
+
+```{r}
+
+residuals_1_to_n_minus_1 = residuals(random_intercept_Pretest_Intervention_model)[1:(length(residuals(random_intercept_Pretest_Intervention_model)) - 1)]
+
+residuals_2_to_n = residuals(random_intercept_Pretest_Intervention_model)[2:length(residuals(random_intercept_Pretest_Intervention_model))]
+
+plot(residuals_1_to_n_minus_1, residuals_2_to_n)
+
+cor(residuals_1_to_n_minus_1, residuals_2_to_n)
+
+```
+
+- __Independence Assumption__ - The Pearson's correlation between the first 259 residuals (all except the last) and the last 259 residuals (all except the first) is low, therefore the assumption of indepentent residuals plausibly holds. 
+
+```{r}
+
+qqnorm(resid(random_intercept_Pretest_Intervention_model))
+qqline(resid(random_intercept_Pretest_Intervention_model), col = "red") 
+
+```
+
+- __Normality Assumption__ - The residuals mostly fit well with the theoretical quantiles of a normal distribution with only a slight deviation at each tail, therefore the assumption of normally distributed residuals plausibly holds. 
+
 ## Word Count
 
 ```{r warning = FALSE, include = FALSE}

@@ -368,6 +368,26 @@ qqline(ranef(random_intercept_Pretest_Intervention_model)$School[, 1], col = "re
 
 - __Normality Assumption - Random Effects__ - The random effects for School mostly fit well with the theoretical quantiles of a normal distribution with a small deviation at each tail, therefore the assumption of normally distributed random effects plausibly holds. 
 
+__Final Model__
+
+```{r}
+
+summary(random_intercept_Pretest_Intervention_model)
+
+estimate = 3.0007
+std_error = 1.1927
+df = 15.7822
+alpha = 0.05
+
+t_critical = qt(1 - alpha / 2, df)
+
+lower_bound = round(estimate - t_critical * std_error, 2)
+upper_bound = round(estimate + t_critical * std_error, 2)
+
+```
+
+- The mean intervention effect is estimated to be 3.00, meaning that Posttest scores are estimated to be 3 points higher for Pupils who have received the intervention than those who have not. The estimated 95% confidence interval ranges from `r lower_bound` to `r upper_bound` meaning that we are 95% confident that the true effect of the intervention on Posttest scores lies within this range, after controlling for Prestest scores and random effects by School. The intervention effect is statistically significant with a p value of 0.02. 
+
 ```{r}
 
 crt_data$Prediction = predict(random_intercept_Pretest_Intervention_model)

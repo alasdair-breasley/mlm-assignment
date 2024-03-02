@@ -321,6 +321,8 @@ ranova(random_intercept_Pretest_Intervention_slope_model)
 
 - The null hypothesis is retained and the random slope for Intervention is not needed. 
 
+TODO: Add interaction terms? 
+
 __Model Diagnostics__
 
 ```{r}
@@ -365,6 +367,27 @@ qqline(ranef(random_intercept_Pretest_Intervention_model)$School[, 1], col = "re
 ```
 
 - __Normality Assumption - Random Effects__ - The random effects for School mostly fit well with the theoretical quantiles of a normal distribution with a small deviation at each tail, therefore the assumption of normally distributed random effects plausibly holds. 
+
+```{r}
+
+crt_data$Prediction = predict(random_intercept_Pretest_Intervention_model)
+
+intervention_group_names = c("1" = "Treatment Group", "0" = "Control Group")
+
+ggplot(crt_data, aes(Pretest, Posttest)) +
+  geom_line(aes(y = Prediction, group = School, colour = School)) +
+  geom_point(aes(Pretest, Posttest, colour = School), size = 1.5, alpha = 0.5, position = position_jitter(width = 0.2, height = 0.2)) +
+  geom_smooth(formula = y ~ x, method = "lm", color = "red", se = FALSE, alpha = 0.5) +
+  facet_grid(~ Intervention, labeller = as_labeller(intervention_group_names)) +
+  scale_x_continuous(breaks = breaks_width(1)) +
+  scale_y_continuous(breaks = breaks_width(2)) +
+  labs(x = "Pretest Score", y = "Posttest Score", title = "2-Level Random Intercept Model for School with Pretest and Intervention") +
+  theme(panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5), axis.text = element_text(color = "black", size = 10),
+        axis.title = element_text(size = 12), plot.title = element_text(size = 12, face = "bold"), legend.position = "none")
+
+```
+
+- Plot showing the fitted values, categorised by control and treatment group with a fitted line for each School. 
 
 ## Word Count
 

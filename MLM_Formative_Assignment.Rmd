@@ -252,6 +252,16 @@ anova(school_intercept_only_model, random_intercept_Pretest_model)
 
 - The null hypothesis is rejected and Pretest is needed. 
 
+__Comparison of 2-Level Random Intercept Model for School with Pretest Pupil Level Covariate with 2-Level Random Intercept Model for School with Pupil Level Covariates__
+
+```{r}
+
+anova(random_intercept_Pretest_model, random_intercept_pupilcovs_model)
+
+```
+
+- There is only a small reduction in deviance when adding FSM and there is insufficient evidence against the null hypothesis that the fixed effect of FSM is 0. The null hypothesis is therefore retained and FSM is not needed. 
+
 ## Word Count
 
 ```{r warning = FALSE, include = FALSE}

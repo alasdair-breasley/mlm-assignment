@@ -297,6 +297,30 @@ ranova(random_intercept_Pretest_slope_Intervention_model)
 
 - The null hypothesis is retained and the random slope for Pretest is not needed. 
 
+__2-Level Random Intercept Model for School with Pretest Pupil Level Covariate and Intervention School Level Covariate (Both Fixed Effect and Random Slope)__
+
+```{r}
+
+# Fit random intercept model for school with Pretest and Intervention (both fixed effect and random slope) 
+random_intercept_Pretest_Intervention_slope_model = lmer(formula = Posttest ~ 1 + Pretest + Intervention + (1 + Intervention | School), data = crt_data, control = lmerControl(optimizer = "Nelder_Mead"))
+
+summary(random_intercept_Pretest_Intervention_slope_model)
+
+```
+
+- Using better optimiser. 
+- Singularity issue. 
+
+- Test the null hypothesis that the random slope for Intervention is zero. 
+
+```{r}
+
+ranova(random_intercept_Pretest_Intervention_slope_model)
+
+```
+
+- The null hypothesis is retained and the random slope for Intervention is not needed. 
+
 ## Word Count
 
 ```{r warning = FALSE, include = FALSE}

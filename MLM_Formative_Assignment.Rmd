@@ -409,6 +409,16 @@ ggplot(crt_data, aes(Pretest, Posttest)) +
 
 - Plot showing the fitted values, categorised by control and treatment group with a fitted line for each School. 
 
+TODO: Write out mathematical form of model. 
+
+## Discussion
+
+TODO: Interpretation of final model and visualisation. 
+
+TODO: Limitations. 
+
+TODO: Do better next times. 
+
 ## Word Count
 
 ```{r warning = FALSE, include = FALSE}

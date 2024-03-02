@@ -52,7 +52,7 @@ colSums(is.na(crt_data))
 ## Introduction 
 
 - Randomised Control Trials (RCTs) are used to assess the effectiveness of an intervention. Individuals are randomly assigned to either the treatment or control group and this aims to prevent systematic differences between intervention groups with regards to both observables and unobservables, preventing selection into treatment bias. 
-- In an educational setting, it may be neither practical nor ethical to administer an intervention at the Pupil or Class level. Providing an intervention at the Pupil level may not be practical or ethical given it would be practically challenging and could be seen as immoral for a teacher to provide some Pupils within a single Class with an intervention and not others. Providing an intervention at the Class level may be more practical than at the Pupil level but may still not be ethical as it could be seen as immoral for a School to provide Pupils in one Class with an intervention and not others. 
+- In an educational setting, it may be neither practical nor ethical to administer an intervention at the Pupil or Class level. Providing an intervention at the Pupil level may not be practical or ethical given it would be practically challenging and could be seen as unethical for a teacher to provide some Pupils within a single Class with an intervention and not others. Providing an intervention at the Class level may be more practical than at the Pupil level but may still not be ethical as it could be seen as unethical for a School to provide Pupils in one Class with an intervention and not others. 
 - This is where Cluster Randomised Control Trials (CRCTs) are useful. A CRCT in an educational setting can allow for an intervention to be administered at the School level, with less practical and ethical issues. Schools are randomly assigned to either the treatment or control group. 
 - This report will assess the results of a 3-level educational CRCT. 20 Schools were randomly assigned to either the control or treatment group, with the treatment group receiving an educational intervention to try and improve Pupils test performance. Pupils test scores were calculated for 2 Classes per School, with test scores calculated both pre and post educational intervention. It is not clear how the initial 20 Schools were selected from the wider population of Schools in the country so there may be selection into experiment bias present. It appears that some Schools and Pupils dropped out of the study so there may be selection into observation bias present, with evidence of this being the absence of School IDs 18 and 19, and Pupil IDs 256, 257 and 258. 
 - The variables collected as part of the CRCT were:
@@ -76,8 +76,6 @@ crt_data %>%
   summary()
 
 ```
-
-__Pupils per School__
 
 ```{r echo = FALSE}
 
@@ -141,7 +139,7 @@ ggplot(crt_data, aes(x = Pretest, y = Posttest, colour = Intervention)) +
 ```
 
 - Naive analysis at the Pupil level. 
-- Note: Points at jittered in both the x and y direction to improve visibility. 
+- Note: Points are jittered in both the x and y direction to improve visibility. 
 - Grey area represents the 95% confidence interval. 
 - There is a moderate positive Spearman's correlation of `r pvp_cor` between Pretest and Posttest scores. Spearman's was used as Pretest does not appear to be normally distributed. 
 
@@ -162,7 +160,9 @@ __2-Level Intercept-Only Model for School__
 ```{r}
 
 # Fit intercept-only model for school 
-school_intercept_only_model = lmer(formula = Posttest ~ 1 + (1 | School), data = crt_data)
+school_intercept_only_model = lmer(formula = Posttest ~ 
+                                   1 + (1 | School), 
+                                   data = crt_data)
 
 summary(school_intercept_only_model)
 
@@ -178,7 +178,10 @@ icc(school_intercept_only_model)
 ```{r}
 
 # Fit intercept-only model for classes nested within schools 
-school_class_intercept_only_model = lmer(formula = Posttest ~ 1 + (1 | School) + (1 | School : Class), data = crt_data)
+school_class_intercept_only_model = lmer(formula = Posttest ~ 
+                                         1 + (1 | School) +
+                                         (1 | School : Class), 
+                                         data = crt_data)
 
 summary(school_class_intercept_only_model)
 
@@ -221,7 +224,10 @@ __2-Level Random Intercept Model for School with Pupil Level Covariates__
 ```{r}
 
 # Fit random intercept model for school with pupil level covariates 
-random_intercept_pupilcovs_model = lmer(formula = Posttest ~ 1 + Pretest + FSM + (1 | School), data = crt_data)
+random_intercept_pupilcovs_model = lmer(formula = Posttest ~ 
+                                        1 + Pretest + FSM + 
+                                        (1 | School), 
+                                        data = crt_data)
 
 summary(random_intercept_pupilcovs_model)
 
@@ -235,7 +241,10 @@ __2-Level Random Intercept Model for School with Pretest Pupil Level Covariate__
 ```{r}
 
 # Fit random intercept model for school with Pretest 
-random_intercept_Pretest_model = lmer(formula = Posttest ~ 1 + Pretest + (1 | School), data = crt_data)
+random_intercept_Pretest_model = lmer(formula = Posttest ~ 
+                                      1 + Pretest + 
+                                      (1 | School), 
+                                      data = crt_data)
 
 summary(random_intercept_Pretest_model)
 
@@ -268,7 +277,10 @@ __2-Level Random Intercept Model for School with Pretest Pupil Level Covariate a
 ```{r}
 
 # Fit random intercept model for school with Pretest and Intervention 
-random_intercept_Pretest_Intervention_model = lmer(formula = Posttest ~ 1 + Pretest + Intervention + (1 | School), data = crt_data)
+random_intercept_Pretest_Intervention_model = lmer(formula = Posttest ~
+                                                   1 + Pretest + Intervention + 
+                                                   (1 | School), 
+                                                   data = crt_data)
 
 summary(random_intercept_Pretest_Intervention_model)
 
@@ -282,7 +294,10 @@ __2-Level Random Intercept Model for School with Pretest Pupil Level Covariate (
 ```{r}
 
 # Fit random intercept model for school with Pretest (both fixed effect and random slope) and Intervention 
-random_intercept_Pretest_slope_Intervention_model = lmer(formula = Posttest ~ 1 + Pretest + Intervention + (1 + Pretest | School), data = crt_data)
+random_intercept_Pretest_slope_Intervention_model = lmer(formula = Posttest ~ 
+                                                         1 + Pretest + Intervention + 
+                                                         (1 + Pretest | School), 
+                                                         data = crt_data)
 
 summary(random_intercept_Pretest_slope_Intervention_model)
 
@@ -303,7 +318,11 @@ __2-Level Random Intercept Model for School with Pretest Pupil Level Covariate a
 ```{r}
 
 # Fit random intercept model for school with Pretest and Intervention (both fixed effect and random slope) 
-random_intercept_Pretest_Intervention_slope_model = lmer(formula = Posttest ~ 1 + Pretest + Intervention + (1 + Intervention | School), data = crt_data, control = lmerControl(optimizer = "Nelder_Mead"))
+random_intercept_Pretest_Intervention_slope_model = lmer(formula = Posttest ~ 
+                                                         1 + Pretest + Intervention + 
+                                                         (1 + Intervention | School), 
+                                                         data = crt_data, 
+                                                         control = lmerControl(optimizer = "Nelder_Mead"))
 
 summary(random_intercept_Pretest_Intervention_slope_model)
 
@@ -387,9 +406,9 @@ upper_bound = round(estimate + t_critical * std_error, 2)
 
 ```
 
-- The mean intervention effect is estimated to be 3.00, meaning that Posttest scores are estimated to be 3 points higher for Pupils who have received the intervention than those who have not. The estimated 95% confidence interval ranges from `r lower_bound` to `r upper_bound` meaning that we are 95% confident that the true effect of the intervention on Posttest scores lies within this range, after controlling for Prestest scores and random effects by School. The intervention effect is statistically significant with a p value of 0.02. 
+- The mean intervention effect is estimated to be 3.00, meaning that Posttest scores are estimated to be on average 3 points higher for Pupils who have received the intervention than those who have not. The estimated 95% confidence interval ranges from `r lower_bound` to `r upper_bound` meaning that we are 95% confident that the true effect of the intervention on Posttest scores lies within this range, after controlling for Prestest scores and random effects by School. The intervention effect is statistically significant with a p value of 0.02. 
 
-```{r}
+```{r echo = FALSE}
 
 crt_data$Prediction = predict(random_intercept_Pretest_Intervention_model)
 
@@ -414,7 +433,7 @@ TODO: Write out mathematical form of model.
 
 ## Discussion
 
-In regards to the research question: Does the educational "Intervention" have a significant impact on student attainment?, the estimated mean intervention effect is 3.00, meaning that Posttest scores are estimated to be 3 points higher for Pupils who have received the intervention than those who have not. This effects is statistically significant. Given that the mean Postest score was 20.54, an estimated mean increase of 3.00 as a result of the intervention is a large increase in score. This effect can be seen in the above visualisation with fitted lines for Schools visibly higher on average in the Treatment Group. 
+In regards to the research question: Does the educational "Intervention" have a significant impact on student attainment?, the estimated mean intervention effect is 3.00, meaning that Posttest scores are estimated to be on average 3 points higher for Pupils who have received the intervention than those who have not. This effects is statistically significant. Given that the mean Postest score was 20.54, an estimated mean increase of 3.00 as a result of the intervention is a large increase in score. This effect can be seen in the above visualisation with fitted lines for Schools visibly higher on average in the Treatment Group. 
 
 TODO: Limitations. 
 

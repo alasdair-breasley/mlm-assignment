@@ -226,6 +226,32 @@ summary(random_intercept_pupilcovs_model)
 
 ```
 
+- Pretest is statistically significant. 
+- FSM is not statistically significant. 
+
+__2-Level Random Intercept Model for School with Pretest Pupil Level Covariate__
+
+```{r}
+
+# Fit random intercept model for school with Pretest 
+random_intercept_Pretest_model = lmer(formula = Posttest ~ 1 + Pretest + (1 | School), data = crt_data)
+
+summary(random_intercept_Pretest_model)
+
+```
+
+__Comparison of 2-Level Intercept-Only Model for School with 2-Level Random Intercept Model for School with Pretest Pupil Level Covariate__
+
+- Test the null hypothesis that $b_1=0$ and $b_{2}=0$ against an alternative that at least one of these fixed effects of Pretest and FSM is not 0. 
+
+```{r}
+
+anova(school_intercept_only_model, random_intercept_Pretest_model)
+
+```
+
+- The null hypothesis is rejected and Pretest is needed. 
+
 ## Word Count
 
 ```{r warning = FALSE, include = FALSE}

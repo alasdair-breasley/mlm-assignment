@@ -262,6 +262,20 @@ anova(random_intercept_Pretest_model, random_intercept_pupilcovs_model)
 
 - There is only a small reduction in deviance when adding FSM and there is insufficient evidence against the null hypothesis that the fixed effect of FSM is zero. The null hypothesis is therefore retained and FSM is not needed. 
 
+__2-Level Random Intercept Model for School with Pretest Pupil Level Covariate and Intervention School Level Covariate__
+
+```{r}
+
+# Fit random intercept model for school with Pretest and Intervention 
+random_intercept_Pretest_Intervention_model = lmer(formula = Posttest ~ 1 + Pretest + Intervention + (1 | School), data = crt_data)
+
+summary(random_intercept_Pretest_Intervention_model)
+
+```
+
+- Pretest is statistically significant. 
+- Intervention is statistically significant. 
+
 __2-Level Random Intercept Model for School with Pretest Pupil Level Covariate (Both Fixed Effect and Random Slope)__
 
 ```{r}

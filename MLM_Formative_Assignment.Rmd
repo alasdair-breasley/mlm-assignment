@@ -160,7 +160,7 @@ __2-Level Intercept-Only Model for School__
 
 ```{r}
 
-# Fit intercept-only model with school 
+# Fit intercept-only model for school 
 school_intercept_only_model = lmer(formula = Posttest ~ 1 + (1 | School), data = crt_data)
 
 summary(school_intercept_only_model)
@@ -176,7 +176,7 @@ icc(school_intercept_only_model)
 
 ```{r}
 
-# Fit intercept-only model with classes nested within schools 
+# Fit intercept-only model for classes nested within schools 
 school_class_intercept_only_model = lmer(formula = Posttest ~ 1 + (1 | School) + (1 | School : Class), data = crt_data)
 
 summary(school_class_intercept_only_model)
@@ -214,6 +214,17 @@ icc_class = round(100 * (sigu + sigv) / totalvar, 2)
 ```
 
 - There is a `r vpc_class`% response variation at the Class level and `r vpc_school`% at the School level. Variability between Schools is much more than between classes. The ICC for Class is `r icc_class`%, largely driven by the School level ICC of `r icc_school`%. Not sure exactly why ICC for 2-Level Intercept-Only Model above is different to icc_school here - because it didn't take into account Class hierarchy and some of the variance between Schools captured was actually the variance between Classes within Schools?
+
+__2-Level Random Intercept Model for School with Pupil Level Covariates__
+
+```{r}
+
+# Fit random intercept model for school with pupil level covariates 
+random_intercept_pupilcovs_model = lmer(formula = Posttest ~ 1 + Pretest + FSM + (1 | School), data = crt_data)
+
+summary(random_intercept_pupilcovs_model)
+
+```
 
 ## Word Count
 

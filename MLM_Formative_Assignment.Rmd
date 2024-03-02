@@ -260,7 +260,28 @@ anova(random_intercept_Pretest_model, random_intercept_pupilcovs_model)
 
 ```
 
-- There is only a small reduction in deviance when adding FSM and there is insufficient evidence against the null hypothesis that the fixed effect of FSM is 0. The null hypothesis is therefore retained and FSM is not needed. 
+- There is only a small reduction in deviance when adding FSM and there is insufficient evidence against the null hypothesis that the fixed effect of FSM is zero. The null hypothesis is therefore retained and FSM is not needed. 
+
+__2-Level Random Intercept Model for School with Pretest Pupil Level Covariate (Both Fixed Effect and Random Slope)__
+
+```{r}
+
+# Fit random intercept model for school with Pretest (both fixed effect and random slope) 
+random_intercept_Pretest_slope_model = lmer(formula = Posttest ~ 1 + Pretest + (1 + Pretest | School), data = crt_data)
+
+summary(random_intercept_Pretest_slope_model)
+
+```
+
+- Test the null hypothesis that the random slope for Pretest is zero. 
+
+```{r}
+
+ranova(random_intercept_Pretest_slope_model)
+
+```
+
+- The null hypothesis is retained and the random slope for Pretest is not needed. 
 
 ## Word Count
 

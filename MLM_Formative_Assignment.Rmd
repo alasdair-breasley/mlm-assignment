@@ -413,7 +413,7 @@ TODO: Write out mathematical form of model.
 
 ## Discussion
 
-TODO: Interpretation of final model and visualisation. 
+In regards to the research question: Does the educational "Intervention" have a significant impact on student attainment?, the estimated mean intervention effect is 3.00, meaning that Posttest scores are estimated to be 3 points higher for Pupils who have received the intervention than those who have not. This effects is statistically significant. Given that the mean Postest score was 20.54, an estimated mean increase of 3.00 as a result of the intervention is a large increase in score. This effect can be seen in the above visualisation with fitted lines for Schools visibly higher on average in the Treatment Group. 
 
 TODO: Limitations. 
 

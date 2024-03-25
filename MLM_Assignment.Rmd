@@ -35,6 +35,23 @@ library(wordcountaddin)
 mst_data = read.csv("https://andygolightly.github.io/teaching/MATH43515/summative/alasdair.csv", 
                     header = TRUE)
 
+# Preprocess data 
+mst_data = mst_data %>% 
+  tidyr::pivot_longer(cols = c(Responset1, Responset2, Responset3), 
+                      names_to = "Time", 
+                      values_to = "Response") %>% # Reshape data to long format 
+  dplyr::mutate(Time = case_when(Time == "Responset1" ~ "1", 
+                                 Time == "Responset2" ~ "2", 
+                                 Time == "Responset3" ~ "3", 
+                                 TRUE ~ NA)) %>% 
+  dplyr::rename(Treatment = Trt) %>% 
+  dplyr::mutate(ID = as.factor(ID), 
+                Hospital = as.factor(Hospital), 
+                Treatment = as.factor(Treatment), 
+                Gender = as.factor(Gender), 
+                Size = as.factor(Size), 
+                Time = as.factor(Time))
+
 # Check for NAs
 colSums(is.na(mst_data))
 

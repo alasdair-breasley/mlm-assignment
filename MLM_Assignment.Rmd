@@ -87,7 +87,7 @@ ggplot(data = mst_data_wide, aes(x = Responset1, fill = Treatment)) +
   scale_fill_manual(values = c("1" = "red", "0" = "blue")) +
   scale_x_continuous(breaks = breaks_width(1), minor_breaks = NULL) +
   scale_y_continuous(breaks = breaks_width(2)) +
-  labs(x = "Stress Scores", y = "Count", title = "Distribution of Stress Scores Overlaid by Intervention Group - Month 1") +
+  labs(x = "Stress Score", y = "Count", title = "Distribution of Stress Scores Overlaid by Intervention Group - Month 1") +
   theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.5), axis.text = element_text(color = "black", size = 12),
         axis.title = element_text(size = 14), plot.title = element_text(size = 14, face = "bold"))
 
@@ -101,7 +101,7 @@ ggplot(data = mst_data_wide, aes(x = Responset2, fill = Treatment)) +
   scale_fill_manual(values = c("1" = "red", "0" = "blue")) +
   scale_x_continuous(breaks = breaks_width(1), minor_breaks = NULL) +
   scale_y_continuous(breaks = breaks_width(2)) +
-  labs(x = "Stress Scores", y = "Count", title = "Distribution of Stress Scores Overlaid by Intervention Group - Month 2") +
+  labs(x = "Stress Score", y = "Count", title = "Distribution of Stress Scores Overlaid by Intervention Group - Month 2") +
   theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.5), axis.text = element_text(color = "black", size = 12),
         axis.title = element_text(size = 14), plot.title = element_text(size = 14, face = "bold"))
 
@@ -115,9 +115,23 @@ ggplot(data = mst_data_wide, aes(x = Responset3, fill = Treatment)) +
   scale_fill_manual(values = c("1" = "red", "0" = "blue")) +
   scale_x_continuous(breaks = breaks_width(1), minor_breaks = NULL) +
   scale_y_continuous(breaks = breaks_width(2)) +
-  labs(x = "Stress Scores", y = "Count", title = "Distribution of Stress Scores Overlaid by Intervention Group - Month 3") +
+  labs(x = "Stress Score", y = "Count", title = "Distribution of Stress Scores Overlaid by Intervention Group - Month 3") +
   theme(panel.border = element_rect(colour = "black", fill = NA, size = 0.5), axis.text = element_text(color = "black", size = 12),
         axis.title = element_text(size = 14), plot.title = element_text(size = 14, face = "bold"))
+
+```
+
+```{r}
+
+# Distribution of stress scores over time by intervention group histogram 
+ggplot(data = mst_data, aes(x = Time, y = Response, colour = Treatment)) +
+  stat_boxplot(geom = "errorbar", width = 0.4, coef = 1.5, position = position_dodge(width = 0.75)) +
+  geom_boxplot() +
+  scale_colour_manual(values = c("1" = "#EC4646", "0" = "#4646EC"), labels = c("1" = "Treatment Group", "0" = "Control Group"), guide_legend(title = "")) +
+  scale_y_continuous(breaks = breaks_width(2)) +
+  labs(x = "Time (Months Since Treatment)", y = "Stress Score", title = "Distribution of Stress Scores Overlaid by Intervention Group - Month 1") +
+  theme(panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5), axis.text = element_text(color = "black", size = 10),
+        axis.title = element_text(size = 12), plot.title = element_text(size = 12, face = "bold"))
 
 ```
 

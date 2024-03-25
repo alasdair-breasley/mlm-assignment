@@ -39,3 +39,17 @@ mst_data = read.csv("https://andygolightly.github.io/teaching/MATH43515/summativ
 colSums(is.na(mst_data))
 
 ```
+
+## Word Count
+
+```{r warning = FALSE, include = FALSE}
+
+n_words = paste0("Word Count: ", as.character(word_count()))
+
+```
+
+```{r echo = FALSE}
+
+print(n_words)
+
+```

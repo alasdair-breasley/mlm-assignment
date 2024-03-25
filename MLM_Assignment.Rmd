@@ -32,11 +32,11 @@ library(wordcountaddin)
 ```{r}
 
 # Load data 
-mst_data = read.csv("https://andygolightly.github.io/teaching/MATH43515/summative/alasdair.csv", 
+mst_data_wide = read.csv("https://andygolightly.github.io/teaching/MATH43515/summative/alasdair.csv", 
                     header = TRUE)
 
-# Preprocess data 
-mst_data = mst_data %>% 
+# Preprocess long data 
+mst_data = mst_data_wide %>% 
   tidyr::pivot_longer(cols = c(Responset1, Responset2, Responset3), 
                       names_to = "Time", 
                       values_to = "Response") %>% # Reshape data to long format 
@@ -52,8 +52,30 @@ mst_data = mst_data %>%
                 Size = as.factor(Size), 
                 Time = as.factor(Time))
 
+# Preprocess wide data 
+mst_data_wide = mst_data_wide %>% 
+  dplyr::rename(Treatment = Trt) %>% 
+  dplyr::mutate(ID = as.factor(ID), 
+                Hospital = as.factor(Hospital), 
+                Treatment = as.factor(Treatment), 
+                Gender = as.factor(Gender), 
+                Size = as.factor(Size))
+
 # Check for NAs
 colSums(is.na(mst_data))
+
+```
+
+## Introduction 
+
+__Summary Statistics__
+
+```{r echo = FALSE}
+
+# Summary statistics 
+mst_data_wide %>% 
+  dplyr::select(-c(ID, Hospital)) %>% 
+  summary()
 
 ```
 

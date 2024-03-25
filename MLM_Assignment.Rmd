@@ -1,0 +1,41 @@
+---
+title: "Title of your report"
+author: "fmcv76"
+date: "02/04/24"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include = FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Initial Data Loading and Checks 
+
+```{r include = FALSE}
+
+library(lme4)
+library(lmerTest)
+library(performance)
+library(ggplot2)
+library(scales)
+library(sjPlot)
+library(tidyverse)
+library(tinytex)
+library(wordcountaddin)
+
+```
+
+```{r}
+
+# Load data 
+mst_data = read.csv("https://andygolightly.github.io/teaching/MATH43515/summative/alasdair.csv", 
+                    header = TRUE)
+
+# Check for NAs
+colSums(is.na(mst_data))
+
+```

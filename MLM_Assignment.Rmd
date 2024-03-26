@@ -202,7 +202,19 @@ summary(random_intercept_timecovs_model)
 
 ```
 
-Time stamp is statistically significant and therefore should be included for modelling. 
+Time stamp is statistically significant. 
+
+__Comparison of 3-Level Intercept-Only Model with 3-Level Random Intercept Model with Time Stamp Time Level Covariate__
+
+- Test the null hypothesis that $b_1=0$ and $b_{2}=0$ against an alternative that the fixed effects of Time is not 0. 
+
+```{r}
+
+anova(hospital_nurse_intercept_only_model, random_intercept_timecovs_model)
+
+```
+
+- The null hypothesis is rejected and Time Stamp is needed. 
 
 ## Word Count
 

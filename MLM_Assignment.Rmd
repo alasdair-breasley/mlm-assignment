@@ -276,6 +276,60 @@ anova(random_intercept_Time_model, random_intercept_Time_Treatment_model, random
 
 3. The null hypothesis is rejected and Gender is needed. 
 
+__3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate__
+
+```{r}
+
+# Fit random intercept model for time within nurses within hospitals with Time time level covariate, nurse level covariates, and Hospital Size hospital level covariate 
+random_intercept_Time_nursecovs_Size_model = lmer(formula = Response ~ 
+                                                  1 + Time + Treatment + Experience + Gender + Size + 
+                                                  (1 | Hospital) + 
+                                                  (1 | Hospital : Nurse), 
+                                                  data = mst_data)
+
+summary(random_intercept_Time_nursecovs_Size_model)
+
+```
+
+Hospital Size is statistically significant. 
+
+__Comparison of 3-Level Random Intercept Model with Time Stamp Time Level Covariate and Nurse Level Covariates with 3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate__
+
+Test the null hypothesis that the fixed effect of Hospital Size is 0 against an alternative that it is not 0. 
+
+```{r}
+
+anova(random_intercept_Time_nursecovs_model, random_intercept_Time_nursecovs_Size_model)
+
+```
+
+The null hypothesis is rejected and Hospital Size is needed. 
+
+__3-Level Random Intercept Model with Time Stamp Time Level Covariate (Both Fixed Effect and Random Slope), Nurse Level Covariates, and Hospital Size Hospital Level Covariate__
+
+```{r}
+
+# Fit random intercept model for time within nurses within hospitals with Time time level covariate (Both Fixed Effect and Random Slope), nurse level covariates, and Hospital Size hospital level covariate 
+random_intercept_Time_slope_nursecovs_Size_model = lmer(formula = Response ~ 
+                                                        1 + Time + Treatment + Experience + Gender + Size + 
+                                                        (1 | Hospital) + 
+                                                        (1 + Time | Hospital : Nurse), 
+                                                        data = mst_data)
+
+summary(random_intercept_Time_slope_nursecovs_Size_model)
+
+```
+
+Test the null hypothesis that the random slope for Time is zero. 
+
+```{r}
+
+ranova(random_intercept_Time_slope_nursecovs_Size_model)
+
+```
+
+The null hypothesis is retained and the random slope for Time is not needed. 
+
 ## Word Count 
 
 ```{r warning = FALSE, include = FALSE}

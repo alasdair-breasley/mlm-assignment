@@ -189,6 +189,20 @@ icc_nurse = round(100 * (sigu + sigv) / totalvar, 2)
 
 Overall, there is a `r icc_nurse`% ICC value and therfore `r icc_nurse`% of the variation in Stress Scores can be exlained by the Time nested within Nurses nested within Hospitals grouping structure. There is a `r vpc_nurse`% Response variation (VPC) at the Nurse level and `r vpc_hospital`% VPC at the Hospital level, Therefore `r vpc_nurse`% of the variation in Stress Scores can be explained by the Nurses grouping structure and `r vpc_hospital`% of the variation in Stress Scores can be explained by the Hospitals grouping structure. The high variability between Nurses intuitively makes sense given that measurements pertaining to an individual Nurse should exhibit larger correlation than measurements from different Nurses. Therefore, the Nurse grouping structure should be include in modelling. The `r vpc_hospital`% variability between Hospitals is a relatively large ICC/VPC value in a healthcare setting and therfore the Hopsital grouping structure should be included in modelling. 
 
+```{r}
+
+# Fit random intercept model for time within nurses within hospitals with time level covariate 
+random_intercept_timecovs_model = lmer(formula = Response ~ 
+                                        1 + Time + 
+                                        (1 | Hospital) + 
+                                        (1 | Hospital : Nurse), 
+                                        data = mst_data)
+
+summary(random_intercept_timecovs_model)
+
+```
+
+Time stamp is statistically significant and therefore should be included for modelling. 
 
 ## Word Count
 

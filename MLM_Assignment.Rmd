@@ -192,31 +192,91 @@ Overall, there is a `r icc_nurse`% ICC value and therfore `r icc_nurse`% of the 
 ```{r}
 
 # Fit random intercept model for time within nurses within hospitals with time level covariate 
-random_intercept_timecovs_model = lmer(formula = Response ~ 
-                                        1 + Time + 
-                                        (1 | Hospital) + 
-                                        (1 | Hospital : Nurse), 
-                                        data = mst_data)
+random_intercept_Time_model = lmer(formula = Response ~ 
+                                   1 + Time + 
+                                   (1 | Hospital) + 
+                                   (1 | Hospital : Nurse), 
+                                   data = mst_data)
 
-summary(random_intercept_timecovs_model)
+summary(random_intercept_Time_model)
 
 ```
 
-Time stamp is statistically significant. 
+Time Stamp is statistically significant. 
 
 __Comparison of 3-Level Intercept-Only Model with 3-Level Random Intercept Model with Time Stamp Time Level Covariate__
 
-- Test the null hypothesis that $b_1=0$ and $b_{2}=0$ against an alternative that the fixed effects of Time is not 0. 
+Test the null hypothesis that the fixed effect of Time Stamp is 0 against an alternative that it is not 0. 
 
 ```{r}
 
-anova(hospital_nurse_intercept_only_model, random_intercept_timecovs_model)
+anova(hospital_nurse_intercept_only_model, random_intercept_Time_model)
 
 ```
 
 - The null hypothesis is rejected and Time Stamp is needed. 
 
-## Word Count
+__3-Level Random Intercept Model with Time Stamp Time Level Covariate and Nurse Level Covariates__
+
+```{r}
+
+# Fit random intercept model for time within nurses within hospitals with time level covariate and nurse level covariates 
+random_intercept_Time_nursecovs_model = lmer(formula = Response ~ 
+                                             1 + Time + Treatment + Experience + Gender +
+                                             (1 | Hospital) + 
+                                             (1 | Hospital : Nurse), 
+                                             data = mst_data)
+
+summary(random_intercept_Time_nursecovs_model)
+
+```
+
+Treatment is statistically significant. 
+Experience is statistically significant. 
+Gender is statistically significant. 
+
+__Comparison of 3-Level Random Intercept Model with Time Stamp Time Level Covariate and 3-Level Random intercept Model with Time Stamp Time Level Covariate and Treatment, Experience, and Gender Nurse Level Covariates__
+
+1. Test the null hypothesis that the fixed effect of Treatment is 0 against an alternative it is not 0. 
+
+2. Test the null hypothesis that the fixed effect of Experience is 0 against an alternative it is not 0. 
+
+3. Test the null hypothesis that the fixed effect of Gender is 0 against an alternative it is not 0. 
+
+```{r}
+
+# Fit random intercept model for time within nurses within hospitals with Time time level covariate and Treatment nurse level covariate 
+random_intercept_Time_Treatment_model = lmer(formula = Response ~ 
+                                             1 + Time + Treatment + 
+                                             (1 | Hospital) + 
+                                             (1 | Hospital : Nurse), 
+                                             data = mst_data)
+
+# Fit random intercept model for time within nurses within hospitals with Time time level covariate and Treatment and Experience nurse level covariates 
+random_intercept_Time_Treatment_Experience_model = lmer(formula = Response ~ 
+                                                        1 + Time + Treatment + Experience + 
+                                                        (1 | Hospital) + 
+                                                        (1 | Hospital : Nurse), 
+                                                        data = mst_data)
+
+# Fit random intercept model for time within nurses within hospitals with Time time level covariate and Treatment, Experience, and Gender nurse level covariates 
+random_intercept_Time_nursecovs_model = lmer(formula = Response ~ 
+                                             1 + Time + Treatment + Experience + Gender + 
+                                             (1 | Hospital) + 
+                                             (1 | Hospital : Nurse), 
+                                             data = mst_data)
+
+anova(random_intercept_Time_model, random_intercept_Time_Treatment_model, random_intercept_Time_Treatment_Experience_model, random_intercept_Time_nursecovs_model)
+
+```
+
+1. The null hypothesis is rejected and Treatment is needed. 
+
+2. The null hypothesis is rejected and Experience is needed. 
+
+3. The null hypothesis is rejected and Gender is needed. 
+
+## Word Count 
 
 ```{r warning = FALSE, include = FALSE}
 

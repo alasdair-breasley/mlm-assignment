@@ -330,6 +330,31 @@ ranova(random_intercept_Time_slope_nursecovs_Size_model)
 
 The null hypothesis is retained and the random slope for Time is not needed. 
 
+__3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates including Experience (Both Fixed Effect and Random Slope), and Hospital Size Hospital Level Covariate__
+
+```{r}
+
+# Fit random intercept model for time within nurses within hospitals with Time time level covariate, nurse level covariates including Experience (Both Fixed Effect and Random Slope), and Hospital Size hospital level covariate 
+random_intercept_Time_nursecovs_Experience_slope_Size_model = lmer(formula = Response ~ 
+                                                                   1 + Time + Treatment + Experience + Gender + Size + 
+                                                                   (1 | Hospital) + 
+                                                                   (1 + Experience | Hospital : Nurse), 
+                                                                   data = mst_data)
+
+summary(random_intercept_Time_nursecovs_Experience_slope_Size_model)
+
+```
+
+Test the null hypothesis that the random slope for Experience is zero. 
+
+```{r}
+
+ranova(random_intercept_Time_slope_nursecovs_Size_model)
+
+```
+
+The null hypothesis is retained and the random slope for Experience is not needed. 
+
 ## Word Count 
 
 ```{r warning = FALSE, include = FALSE}

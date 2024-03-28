@@ -320,7 +320,7 @@ summary(random_intercept_Time_slope_nurseCovs_Size_model)
 
 ```
 
-Test the null hypothesis that the random slope for Time is zero. 
+Test the null hypothesis that the random slope for Time is 0 against an alternative that it is not 0. 
 
 ```{r}
 
@@ -345,7 +345,7 @@ summary(random_intercept_Time_nurseCovs_Experience_slope_Size_model)
 
 ```
 
-Test the null hypothesis that the random slope for Experience is zero. 
+Test the null hypothesis that the random slope for Experience is 0 against an alternative that it is not 0. 
 
 ```{r}
 
@@ -381,6 +381,30 @@ anova(random_intercept_Time_nurseCovs_Size_model, random_intercept_Time_nurseCov
 ```
 
 The null hypothesis is retained and the interaction between Time and Experience is not needed. 
+
+__Comparison of 3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate with 3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate with Interaction Between Treatment and Time__
+
+```{r}
+
+# Fit random intercept model for time within nurses within hospitals with Time time level covariate, nurse level covariates, and Hospital Size hospital level covariate with interaction between treatment and time 
+final_model = lmer(formula = Response ~ 
+                   1 + Treatment + Time + Treatment:Time + Experience + Gender + Size + 
+                   (1 | Hospital) + 
+                   (1 | Hospital : Nurse), 
+                   data = mst_data)
+
+summary(final_model)
+
+```
+Test the null hypothesis that the interaction between Treatment and Time is 0 against an alternative that it is not 0. 
+
+```{r}
+
+anova(random_intercept_Time_nurseCovs_Size_model, final_model)
+
+```
+
+The null hypothesis is rejected and the interaction between Treatment and Time is needed. 
 
 ## Word Count 
 

@@ -121,6 +121,9 @@ ggplot(data = mst_data_wide, aes(x = Responset3, fill = Treatment)) +
 
 ```
 
+A naive analysis of the above histograms indicates that there is an initial treatment effect and that this treament effect reduces over time. The Stress Score distributions of the control and treatment groups start away from each other with little overlap, and with each time step the treatment group distribution moves right along the Stress Score axis converging towards the control group distribution i.e. the treatment group Stress Scores increase over time post treatment with the control group remianing similar. 
+
+
 ```{r}
 
 # Distribution of stress scores over time by intervention group histogram 
@@ -134,6 +137,8 @@ ggplot(data = mst_data, aes(x = Time, y = Response, colour = Treatment)) +
         axis.title = element_text(size = 12), plot.title = element_text(size = 12, face = "bold"))
 
 ```
+
+A naive analysis of the above plot indicates that the median Stress Score in the treament group is ~4.5 lower than the control group one month after treatment, with this reducing to ~4 and ~2.5 lower after two and three months respectively. As with the histograms, the treatment group Stress Scores increase over time post treatment converging towards the control group at an increase in median Stress Score of ~1 per month. 
 
 ```{r}
 

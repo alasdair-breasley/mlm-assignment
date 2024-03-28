@@ -156,9 +156,9 @@ __3-Level Intercept-Only Model for Time within Nurses within Hospitals__
 
 # Fit intercept-only model for nurses nested within hospitals 
 hospital_nurse_intercept_only_model = lmer(formula = Response ~ 
-                                           1 + (1 | Hospital) + 
-                                           (1 | Hospital : Nurse), 
-                                           data = mst_data)
+                                       1 + (1 | Hospital) + 
+                                       (1 | Hospital : Nurse), 
+                                       data = mst_data)
 
 summary(hospital_nurse_intercept_only_model)
 
@@ -192,18 +192,21 @@ icc_nurse = round(100 * (sigu + sigv) / totalvar, 2)
 
 ```
 
-Overall, there is a `r icc_nurse`% ICC value and therfore `r icc_nurse`% of the variation in Stress Scores can be exlained by the Time nested within Nurses nested within Hospitals grouping structure. There is a `r vpc_nurse`% Response variation (VPC) at the Nurse level and `r vpc_hospital`% VPC at the Hospital level, Therefore `r vpc_nurse`% of the variation in Stress Scores can be explained by the Nurses grouping structure and `r vpc_hospital`% of the variation in Stress Scores can be explained by the Hospitals grouping structure. The high variability between Nurses intuitively makes sense given that measurements pertaining to an individual Nurse should exhibit larger correlation than measurements from different Nurses. Therefore, the Nurse grouping structure should be include in modelling. The `r vpc_hospital`% variability between Hospitals is a relatively large ICC/VPC value in a healthcare setting and therfore the Hopsital grouping structure should be included in modelling. 
+Overall, there is a `r icc_nurse`% ICC value and therefore `r icc_nurse`% of the variation in Stress Scores can be explained by the Time nested within Nurses nested within Hospitals grouping structure. There is a `r vpc_nurse`% Response variation (VPC) at the Nurse level and `r vpc_hospital`% VPC at the Hospital level, Therefore `r vpc_nurse`% of the variation in Stress Scores can be explained by the Nurses grouping structure and `r vpc_hospital`% of the variation in Stress Scores can be explained by the Hospitals grouping structure. The high variability between Nurses intuitively makes sense given that measurements pertaining to an individual Nurse should exhibit larger correlation than measurements from different Nurses. Therefore, the Nurse grouping structure should be include in modelling. The `r vpc_hospital`% variability between Hospitals is a relatively large VPC value in a healthcare setting and therefore the Hopsital grouping structure should be included in modelling. 
+
+__3-Level Random Intercept Model with Time Stamp Time Level Covariate__
 
 ```{r}
 
-# Fit random intercept model for time within nurses within hospitals with time level covariate 
-random_intercept_Time_model = lmer(formula = Response ~ 
-                                   1 + Time + 
-                                   (1 | Hospital) + 
-                                   (1 | Hospital : Nurse), 
-                                   data = mst_data)
+# Fit random intercept model for time within nurses within hospitals 
+# with time level covariate 
+ri_Time_model = lmer(formula = Response ~ 
+                 1 + Time + 
+                 (1 | Hospital) + 
+                 (1 | Hospital : Nurse), 
+                 data = mst_data)
 
-summary(random_intercept_Time_model)
+summary(ri_Time_model)
 
 ```
 
@@ -215,29 +218,32 @@ Test the null hypothesis that the fixed effect of Time Stamp is 0 against an alt
 
 ```{r}
 
-anova(hospital_nurse_intercept_only_model, random_intercept_Time_model)
+anova(hospital_nurse_intercept_only_model, ri_Time_model)
 
 ```
 
-- The null hypothesis is rejected and Time Stamp is needed. 
+The null hypothesis is rejected and Time Stamp is needed. 
 
 __3-Level Random Intercept Model with Time Stamp Time Level Covariate and Nurse Level Covariates__
 
 ```{r}
 
-# Fit random intercept model for time within nurses within hospitals with time level covariate and nurse level covariates 
-random_intercept_Time_nurseCovs_model = lmer(formula = Response ~ 
-                                             1 + Time + Treatment + Experience + Gender +
-                                             (1 | Hospital) + 
-                                             (1 | Hospital : Nurse), 
-                                             data = mst_data)
+# Fit random intercept model for time within nurses within hospitals 
+# with time level covariate and nurse level covariates 
+ri_Time_nurseCovs_model = lmer(formula = Response ~ 
+                           1 + Time + Treatment + Experience + Gender +
+                           (1 | Hospital) + 
+                           (1 | Hospital : Nurse), 
+                           data = mst_data)
 
-summary(random_intercept_Time_nurseCovs_model)
+summary(ri_Time_nurseCovs_model)
 
 ```
 
 Treatment is statistically significant. 
+
 Experience is statistically significant. 
+
 Gender is statistically significant. 
 
 __Comparison of 3-Level Random Intercept Model with Time Stamp Time Level Covariate and 3-Level Random intercept Model with Time Stamp Time Level Covariate and Treatment, Experience, and Gender Nurse Level Covariates__
@@ -250,32 +256,37 @@ __Comparison of 3-Level Random Intercept Model with Time Stamp Time Level Covari
 
 ```{r}
 
-# Fit random intercept model for time within nurses within hospitals with Time time level covariate and Treatment nurse level covariate 
-random_intercept_Time_Treatment_model = lmer(formula = Response ~ 
-                                             1 + Time + Treatment + 
-                                             (1 | Hospital) + 
-                                             (1 | Hospital : Nurse), 
-                                             data = mst_data)
+# Fit random intercept model for time within nurses within hospitals 
+# with Time time level covariate and Treatment nurse level covariate 
+ri_Time_Treatment_model = lmer(formula = Response ~ 
+                           1 + Time + Treatment + 
+                           (1 | Hospital) + 
+                           (1 | Hospital : Nurse), 
+                           data = mst_data)
 
-# Fit random intercept model for time within nurses within hospitals with Time time level covariate and Treatment and Experience nurse level covariates 
-random_intercept_Time_Treatment_Experience_model = lmer(formula = Response ~ 
-                                                        1 + Time + Treatment + Experience + 
-                                                        (1 | Hospital) + 
-                                                        (1 | Hospital : Nurse), 
-                                                        data = mst_data)
+# Fit random intercept model for time within nurses within hospitals 
+# with Time time level covariate and Treatment and Experience nurse level covariates 
+ri_Time_Treatment_Experience_model = lmer(formula = Response ~ 
+                                      1 + Time + Treatment + Experience + 
+                                      (1 | Hospital) + 
+                                      (1 | Hospital : Nurse), 
+                                      data = mst_data)
 
-# Fit random intercept model for time within nurses within hospitals with Time time level covariate and Treatment, Experience, and Gender nurse level covariates 
-random_intercept_Time_nurseCovs_model = lmer(formula = Response ~ 
-                                             1 + Time + Treatment + Experience + Gender + 
-                                             (1 | Hospital) + 
-                                             (1 | Hospital : Nurse), 
-                                             data = mst_data)
+# Fit random intercept model for time within nurses within 
+# hospitals with Time time level covariate and Treatment, 
+# Experience, and Gender nurse level covariates 
+ri_Time_nurseCovs_model = lmer(formula = Response ~ 
+                           1 + Time + Treatment + Experience + Gender + 
+                           (1 | Hospital) + 
+                           (1 | Hospital : Nurse), 
+                           data = mst_data)
 
-anova(random_intercept_Time_model, random_intercept_Time_Treatment_model, random_intercept_Time_Treatment_Experience_model, random_intercept_Time_nurseCovs_model)
+anova(ri_Time_model, ri_Time_Treatment_model, 
+      ri_Time_Treatment_Experience_model, ri_Time_nurseCovs_model)
 
 ```
 
-1. The null hypothesis is rejected and Treatment is needed. 
+1. The null hypothesis is rejected and Treatment is needed, and would be included anyway given it is effect being estimated. 
 
 2. The null hypothesis is rejected and Experience is needed. 
 
@@ -285,14 +296,16 @@ __3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Lev
 
 ```{r}
 
-# Fit random intercept model for time within nurses within hospitals with Time time level covariate, nurse level covariates, and Hospital Size hospital level covariate 
-random_intercept_Time_nurseCovs_Size_model = lmer(formula = Response ~ 
-                                                  1 + Time + Treatment + Experience + Gender + Size + 
-                                                  (1 | Hospital) + 
-                                                  (1 | Hospital : Nurse), 
-                                                  data = mst_data)
+# Fit random intercept model for time within nurses within hospitals 
+# with Time time level covariate, nurse level covariates, and Hospital Size 
+# hospital level covariate 
+ri_Time_nurseCovs_Size_model = lmer(formula = Response ~ 
+                                1 + Time + Treatment + Experience + Gender + Size + 
+                                (1 | Hospital) + 
+                                (1 | Hospital : Nurse), 
+                                data = mst_data)
 
-summary(random_intercept_Time_nurseCovs_Size_model)
+summary(ri_Time_nurseCovs_Size_model)
 
 ```
 
@@ -304,7 +317,7 @@ Test the null hypothesis that the fixed effect of Hospital Size is 0 against an 
 
 ```{r}
 
-anova(random_intercept_Time_nurseCovs_model, random_intercept_Time_nurseCovs_Size_model)
+anova(ri_Time_nurseCovs_model, ri_Time_nurseCovs_Size_model)
 
 ```
 
@@ -314,14 +327,16 @@ __3-Level Random Intercept Model with Time Stamp Time Level Covariate (Both Fixe
 
 ```{r}
 
-# Fit random intercept model for time within nurses within hospitals with Time time level covariate (Both Fixed Effect and Random Slope), nurse level covariates, and Hospital Size hospital level covariate 
-random_intercept_Time_slope_nurseCovs_Size_model = lmer(formula = Response ~ 
-                                                        1 + Time + Treatment + Experience + Gender + Size + 
-                                                        (1 | Hospital) + 
-                                                        (1 + Time | Hospital : Nurse), 
-                                                        data = mst_data)
+# Fit random intercept model for time within nurses within hospitals 
+# with Time time level covariate (Both Fixed Effect and Random Slope), 
+# nurse level covariates, and Hospital Size hospital level covariate 
+ri_Time_slope_nurseCovs_Size_model = lmer(formula = Response ~ 
+                                      1 + Time + Treatment + Experience + Gender + Size + 
+                                      (1 | Hospital) + 
+                                      (1 + Time | Hospital : Nurse), 
+                                      data = mst_data)
 
-summary(random_intercept_Time_slope_nurseCovs_Size_model)
+summary(ri_Time_slope_nurseCovs_Size_model)
 
 ```
 
@@ -329,74 +344,28 @@ Test the null hypothesis that the random slope for Time is 0 against an alternat
 
 ```{r}
 
-ranova(random_intercept_Time_slope_nurseCovs_Size_model)
+ranova(ri_Time_slope_nurseCovs_Size_model)
 
 ```
 
 The null hypothesis is retained and the random slope for Time is not needed. 
 
-__3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates including Experience (Both Fixed Effect and Random Slope), and Hospital Size Hospital Level Covariate__
+TODO: Explain which random slopes were tried? 
 
-```{r}
-
-# Fit random intercept model for time within nurses within hospitals with Time time level covariate, nurse level covariates including Experience (Both Fixed Effect and Random Slope), and Hospital Size hospital level covariate 
-random_intercept_Time_nurseCovs_Experience_slope_Size_model = lmer(formula = Response ~ 
-                                                                   1 + Time + Treatment + Experience + Gender + Size + 
-                                                                   (1 | Hospital) + 
-                                                                   (1 + Experience | Hospital : Nurse), 
-                                                                   data = mst_data)
-
-summary(random_intercept_Time_nurseCovs_Experience_slope_Size_model)
-
-```
-
-Test the null hypothesis that the random slope for Experience is 0 against an alternative that it is not 0. 
-
-```{r}
-
-ranova(random_intercept_Time_nurseCovs_Experience_slope_Size_model)
-
-```
-
-The null hypothesis is retained and the random slope for Experience is not needed. 
-
-__3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate with Interaction Between Time and Experience__
-
-```{r}
-
-# Fit random intercept model for time within nurses within hospitals with Time time level covariate, nurse level covariates, and Hospital Size hospital level covariate with interaction between Time and Experience 
-random_intercept_Time_nurseCovs_interaction_Size_model = lmer(formula = Response ~ 
-                                                              1 + Time * Experience + Treatment + Gender + Size + 
-                                                              (1 | Hospital) + 
-                                                              (1 | Hospital : Nurse), 
-                                                              data = mst_data)
-
-summary(random_intercept_Time_nurseCovs_interaction_Size_model)
-
-```
-
-__Comparison of 3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate with 3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate with Interaction Between Time and Experience__
-
-Test the null hypothesis that the interaction between Time and Experience is 0 against an alternative that it is not 0. 
-
-```{r}
-
-anova(random_intercept_Time_nurseCovs_Size_model, random_intercept_Time_nurseCovs_interaction_Size_model)
-
-```
-
-The null hypothesis is retained and the interaction between Time and Experience is not needed. 
+TODO: Explain which interactions were tried? 
 
 __Comparison of 3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate with 3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate with Interaction Between Treatment and Time__
 
 ```{r}
 
-# Fit random intercept model for time within nurses within hospitals with Time time level covariate, nurse level covariates, and Hospital Size hospital level covariate with interaction between treatment and time 
+# Fit random intercept model for time within nurses within hospitals 
+# with Time time level covariate, nurse level covariates, and Hospital Size 
+# hospital level covariate with interaction between Treatment and Time 
 final_model = lmer(formula = Response ~ 
-                   1 + Treatment + Time + Treatment:Time + Experience + Gender + Size + 
-                   (1 | Hospital) + 
-                   (1 | Hospital : Nurse), 
-                   data = mst_data)
+               1 + Treatment + Time + Treatment:Time + Experience + Gender + Size + 
+               (1 | Hospital) + 
+               (1 | Hospital : Nurse), 
+               data = mst_data)
 
 summary(final_model)
 
@@ -405,7 +374,7 @@ Test the null hypothesis that the interaction between Treatment and Time is 0 ag
 
 ```{r}
 
-anova(random_intercept_Time_nurseCovs_Size_model, final_model)
+anova(ri_Time_nurseCovs_Size_model, final_model)
 
 ```
 
@@ -419,7 +388,7 @@ plot(final_model)
 
 ```
 
-- __Linearity Assumption__ - Points spread roughly evenly above and below the 0 line with some lines assessed to be as a result of the data simulation process, therefore the assumption of a linear relationship between predictor variables and the response variable plausibly holds. 
+- __Linearity Assumption__ - Points spread roughly evenly above and below the 0 line with some visible lines assessed to be as a result of the data simulation process, therefore the assumption of a linear relationship between predictor variables and the response variable plausibly holds. 
 - __Homoscedasticity Assumption__ - There is not an obvious change in spread for the residuals over the range of fitted values, therefore the assumption of residuals having constant variance across different values of the response variable plausibly holds. 
 
 ```{r}
@@ -434,7 +403,7 @@ cor(residuals_1_to_n_minus_1, residuals_2_to_n)
 
 ```
 
-There appears to be a small positive association between adjascent residuals so residuals were randomised and reanalysed. 
+There appears to be a small association between adjascent residuals so residuals were randomised and reanalysed. 
 
 ```{r}
 

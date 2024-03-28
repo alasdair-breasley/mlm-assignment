@@ -464,6 +464,26 @@ qqline(ranef(final_model)$`Hospital:Nurse`[, 1], col = "red")
 
 - __Normality Assumption - Random Effects - Nurses within Hospitals__ - The random effects for Nurses within Hospitals mostly fit well with the theoretical quantiles of a normal distribution with a small deviation at each tail, therefore the assumption of normally distributed random effects plausibly holds. 
 
+__Final Model__
+
+```{r}
+
+summary(final_model)
+
+```
+
+The mean treatment effect is estimated to be -5.41 at a Time of 0, meaning that Stress Scores are estimated to be on average 5.41 points lower for Nurses who have received the treatment than those who have not, immediately after treatment. Given that the data does not cover Stress Scores at a Time of 0, this estimate is an extrapolation and should be used with caution. 
+
+The interaction with Time on the mean treatment effect is estimated to be 0.93, meaning that for each unit increase in Time, the mean treatment effect is estimated to decrease by 0.93, i.e. the mean treatment effect is estimated to decrease by 0.93 and therefore Stress Scores are estimated to increase by 0.93 on average every month which passes post Treatment for Nurses in the treatment group. The estimated mean effect of Time on Stress Scores is not statistically significant, with Time included in modelling because of the statistically significant interaction between Treatment and Time. 
+
+The fixed effect of Experience is estimated to be -0.11, meaning that for every year of Experience a Nurse has, the estimated mean Stress Score decreases by 0.11. 
+
+The fixed effect of Gender is estimated to be 2.09, meaning that the estimated mean Stress Score increases by 2.09 for female Nurses when compared to male Nurses. 
+
+The fixed effect of Hospital Size is estimated to be 1.98, meaning that the estimated mean Stress Score increases by 1.98 for Nurses in large Hospitals when compared to small Hospitals. 
+
+TODO: Work out how to calculate confidence intervals given Treatment Time interaction 
+
 ## Word Count 
 
 ```{r warning = FALSE, include = FALSE}

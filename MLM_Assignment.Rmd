@@ -406,6 +406,90 @@ anova(random_intercept_Time_nurseCovs_Size_model, final_model)
 
 The null hypothesis is rejected and the interaction between Treatment and Time is needed. 
 
+__Model Diagnostics__
+
+```{r}
+
+plot(final_model)
+
+```
+
+- __Linearity Assumption__ - Points spread roughly evenly above and below the 0 line with some lines assessed to be as a result of the data simulation process, therefore the assumption of a linear relationship between predictor variables and the response variable plausibly holds. 
+- __Homoscedasticity Assumption__ - There is not an obvious change in spread for the residuals over the range of fitted values, therefore the assumption of residuals having constant variance across different values of the response variable plausibly holds. 
+
+```{r}
+
+residuals_1_to_n_minus_1 = residuals(final_model)[1:(length(residuals(final_model)) - 1)]
+
+residuals_2_to_n = residuals(final_model)[2:length(residuals(final_model))]
+
+plot(residuals_1_to_n_minus_1, residuals_2_to_n)
+
+cor(residuals_1_to_n_minus_1, residuals_2_to_n)
+
+```
+
+There appears to be a small positive association between adjascent residuals so residuals were randomised and reanalysed. 
+
+```{r}
+
+# Check if randomising rows reduces correlation of adjascent residuals 
+
+set.seed(123)
+
+indices = sample(seq(1, nrow(mst_data), by = 1), replace = FALSE, prob = rep(1 / nrow(mst_data), nrow(mst_data)))
+
+mst_data_randomised = mst_data[order(indices), ]
+
+# Refit final model with randomised row order 
+final_model = lmer(formula = Response ~ 
+                   1 + Treatment + Time + Treatment:Time + Experience + Gender + Size + 
+                   (1 | Hospital) + 
+                   (1 | Hospital : Nurse), 
+                   data = mst_data_randomised)
+
+residuals_1_to_n_minus_1 = residuals(final_model)[1:(length(residuals(final_model)) - 1)]
+
+residuals_2_to_n = residuals(final_model)[2:length(residuals(final_model))]
+
+plot(residuals_1_to_n_minus_1, residuals_2_to_n)
+
+cor(residuals_1_to_n_minus_1, residuals_2_to_n)
+
+```
+
+- __Independence Assumption__ - The Pearson's correlation between the first 599 residuals (all except the last) and the last 599 residuals (all except the first) is low when the row order of the data is randomised, therefore the assumption of indepentent residuals plausibly holds. 
+
+```{r}
+
+qqnorm(resid(final_model))
+
+qqline(resid(final_model), col = "red") 
+
+```
+
+- __Normality Assumption - Residuals__ - The residuals mostly fit well with the theoretical quantiles of a normal distribution with only a slight deviation at each tail, therefore the assumption of normally distributed residuals plausibly holds. 
+
+```{r}
+
+qqnorm(ranef(final_model)$Hospital[, 1])
+
+qqline(ranef(final_model)$Hospital[, 1], col = "red")
+
+```
+
+- __Normality Assumption - Random Effects - Hospitals__ - The random effects for Hospital mostly fit well with the theoretical quantiles of a normal distribution with a small deviation at each tail, therefore the assumption of normally distributed random effects plausibly holds. 
+
+```{r}
+
+qqnorm(ranef(final_model)$`Hospital:Nurse`[, 1])
+
+qqline(ranef(final_model)$`Hospital:Nurse`[, 1], col = "red")
+
+```
+
+- __Normality Assumption - Random Effects - Nurses within Hospitals__ - The random effects for Nurses within Hospitals mostly fit well with the theoretical quantiles of a normal distribution with a small deviation at each tail, therefore the assumption of normally distributed random effects plausibly holds. 
+
 ## Word Count 
 
 ```{r warning = FALSE, include = FALSE}

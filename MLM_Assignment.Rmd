@@ -418,15 +418,15 @@ indices = sample(seq(1, nrow(mst_data), by = 1), replace = FALSE, prob = rep(1 /
 mst_data_randomised = mst_data[order(indices), ]
 
 # Refit final model with randomised row order 
-final_model = lmer(formula = Response ~ 
+final_model_randomised = lmer(formula = Response ~ 
                    1 + Treatment + Time + Treatment:Time + Experience + Gender + Size + 
                    (1 | Hospital) + 
                    (1 | Hospital : Nurse), 
                    data = mst_data_randomised)
 
-residuals_1_to_n_minus_1 = residuals(final_model)[1:(length(residuals(final_model)) - 1)]
+residuals_1_to_n_minus_1 = residuals(final_model_randomised)[1:(length(residuals(final_model_randomised)) - 1)]
 
-residuals_2_to_n = residuals(final_model)[2:length(residuals(final_model))]
+residuals_2_to_n = residuals(final_model_randomised)[2:length(residuals(final_model_randomised))]
 
 plot(residuals_1_to_n_minus_1, residuals_2_to_n)
 
@@ -532,6 +532,32 @@ The fixed effect of Gender is estimated to be 2.09, meaning that the estimated m
 The fixed effect of Hospital Size is estimated to be 1.98, meaning that the estimated mean Stress Score increases by 1.98 for Nurses in large Hospitals when compared to small Hospitals. 
 
 TODO: Work out how to calculate confidence intervals given Treatment Time interaction 
+
+```{r echo = FALSE}
+
+# mst_data = mst_data %>% 
+#   dplyr::select(-Prediction)
+
+mst_data$Prediction = predict(final_model)
+
+# Subset to only include data 
+mst_data_visualisation_subset = mst_data %>% 
+  dplyr::filter(Hospital == "9") 
+
+intervention_group_names = c("1" = "Treatment Group", "0" = "Control Group")
+
+ggplot(mst_data_visualisation_subset, aes(Time, Response)) +
+  geom_line(aes(y = Prediction, group = Nurse, colour = Nurse)) +
+  geom_point(aes(Time, Response, colour = Nurse), size = 1.5, alpha = 0.5, position = position_jitter(width = 0.2, height = 0.2)) +
+  geom_smooth(formula = y ~ x, method = "lm", color = "red", se = FALSE, alpha = 0.5) +
+  facet_grid(~ Treatment, labeller = as_labeller(intervention_group_names)) +
+  scale_x_continuous(breaks = breaks_width(0.5)) +
+  scale_y_continuous(breaks = breaks_width(1)) +
+  labs(x = "Time (Months Post Treatment)", y = "Stress Score", title = "Final Model - Hospital 9") +
+  theme(panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5), axis.text = element_text(color = "black", size = 10),
+        axis.title = element_text(size = 12), plot.title = element_text(size = 12, face = "bold"), legend.position = "none")
+
+```
 
 ## Word Count 
 

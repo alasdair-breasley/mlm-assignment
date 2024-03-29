@@ -540,7 +540,7 @@ TODO: Work out how to calculate confidence intervals given Treatment Time intera
 
 mst_data$Prediction = predict(final_model)
 
-# Subset to only include data 
+# Subset to only include hospital 9 data 
 mst_data_visualisation_subset = mst_data %>% 
   dplyr::filter(Hospital == "9") 
 
@@ -548,7 +548,7 @@ intervention_group_names = c("1" = "Treatment Group", "0" = "Control Group")
 
 ggplot(mst_data_visualisation_subset, aes(Time, Response)) +
   geom_line(aes(y = Prediction, group = Nurse, colour = Nurse)) +
-  geom_point(aes(Time, Response, colour = Nurse), size = 1.5, alpha = 0.5, position = position_jitter(width = 0.2, height = 0.2)) +
+  geom_point(aes(Time, Response, colour = Nurse), size = 1.5, alpha = 0.5, position = position_jitter(width = 0.1, height = 0.25)) +
   geom_smooth(formula = y ~ x, method = "lm", color = "red", se = FALSE, alpha = 0.5) +
   facet_grid(~ Treatment, labeller = as_labeller(intervention_group_names)) +
   scale_x_continuous(breaks = breaks_width(0.5)) +
@@ -558,6 +558,31 @@ ggplot(mst_data_visualisation_subset, aes(Time, Response)) +
         axis.title = element_text(size = 12), plot.title = element_text(size = 12, face = "bold"), legend.position = "none")
 
 ```
+
+Example of small hospital. 
+
+```{r echo = FALSE}
+
+# Subset to only include hospital 16 data 
+mst_data_visualisation_subset = mst_data %>% 
+  dplyr::filter(Hospital == "16") 
+
+intervention_group_names = c("1" = "Treatment Group", "0" = "Control Group")
+
+ggplot(mst_data_visualisation_subset, aes(Time, Response)) +
+  geom_line(aes(y = Prediction, group = Nurse, colour = Nurse)) +
+  geom_point(aes(Time, Response, colour = Nurse), size = 1.5, alpha = 0.5, position = position_jitter(width = 0.1, height = 0.25)) +
+  geom_smooth(formula = y ~ x, method = "lm", color = "red", se = FALSE, alpha = 0.5) +
+  facet_grid(~ Treatment, labeller = as_labeller(intervention_group_names)) +
+  scale_x_continuous(breaks = breaks_width(0.5)) +
+  scale_y_continuous(breaks = breaks_width(1)) +
+  labs(x = "Time (Months Post Treatment)", y = "Stress Score", title = "Final Model - Hospital 16") +
+  theme(panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5), axis.text = element_text(color = "black", size = 10),
+        axis.title = element_text(size = 12), plot.title = element_text(size = 12, face = "bold"), legend.position = "none")
+
+```
+
+Example of big hospital. 
 
 ## Word Count 
 

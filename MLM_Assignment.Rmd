@@ -472,9 +472,56 @@ __Final Model__
 
 summary(final_model)
 
+# Calculate the confidence interval for the average treatment effect at Time 0 
+# given the interaction between Treatment and Time 
+t0 = emmeans(final_model, specs = ~ Treatment | Time, at = list(Time = 0))
+
+t0_estimates = confint(contrast(t0, method = "trt.vs.ctrl", ref = 1))
+
+t0_mean_treatment_effect = sprintf("%.2f", round(t0_estimates$estimate, 2))
+t0_lower_CI = sprintf("%.2f", round(t0_estimates$lower.CL, 2))
+t0_upper_CI = sprintf("%.2f", round(t0_estimates$upper.CL, 2))
+
+# Calculate the confidence interval for the average treatment effect at Time 1 
+# given the interaction between Treatment and Time 
+t1 = emmeans(final_model, specs = ~ Treatment | Time, at = list(Time = 1))
+
+t1_estimates = confint(contrast(t1, method = "trt.vs.ctrl", ref = 1))
+
+t1_mean_treatment_effect = sprintf("%.2f", round(t1_estimates$estimate, 2))
+t1_lower_CI = sprintf("%.2f", round(t1_estimates$lower.CL, 2))
+t1_upper_CI = sprintf("%.2f", round(t1_estimates$upper.CL, 2))
+
+# Calculate the confidence interval for the average treatment effect at Time 2 
+# given the interaction between Treatment and Time 
+t2 = emmeans(final_model, specs = ~ Treatment | Time, at = list(Time = 2))
+
+t2_estimates = confint(contrast(t2, method = "trt.vs.ctrl", ref = 1))
+
+t2_mean_treatment_effect = sprintf("%.2f", round(t2_estimates$estimate, 2))
+t2_lower_CI = sprintf("%.2f", round(t2_estimates$lower.CL, 2))
+t2_upper_CI = sprintf("%.2f", round(t2_estimates$upper.CL, 2))
+
+# Calculate the confidence interval for the average treatment effect at Time 3 
+# given the interaction between Treatment and Time 
+t3 = emmeans(final_model, specs = ~ Treatment | Time, at = list(Time = 3))
+
+t3_estimates = confint(contrast(t3, method = "trt.vs.ctrl", ref = 1))
+
+t3_mean_treatment_effect = sprintf("%.2f", round(t3_estimates$estimate, 2))
+t3_lower_CI = sprintf("%.2f", round(t3_estimates$lower.CL, 2))
+t3_upper_CI = sprintf("%.2f", round(t3_estimates$upper.CL, 2))
+
 ```
 
-The mean treatment effect is estimated to be -5.41 at a Time of 0, meaning that Stress Scores are estimated to be on average 5.41 points lower for Nurses who have received the treatment than those who have not, immediately after treatment. Given that the data does not cover Stress Scores at a Time of 0, this estimate is an extrapolation and should be used with caution. 
+The mean treatment effect is estimated to be -5.41 at a Time of 0, meaning that Stress Scores are estimated to be on average 5.41 points lower for Nurses who have received the treatment than those who have not, immediately after treatment. Given that the data does not cover Stress Scores at a Time of 0, this estimate is an extrapolation and should be used with caution. The estimated 95% confidence interval ranges from -6.22 to -4.59 meaning that we are 95% confident that the true effect of the intervention on Stress Scores lies within this range, after controlling for Time, the interaction between Treatment and Time, Experience, Gender, Hospital Size, random effects by Hospital and by Nurses within Hospitals. The treatment effect is statistically significant with a p value of < 0.0001. The below table details the estimated treatment effect at each Time value given the interaction between Treatment and Time. 
+
+| Time (Months Post Treatment) | Time 0 | Time 1 | Time 2 | Time 3 | 
+|-------|-------|-------|-------|-------|
+| Average Treatment Effect | `r t0_mean_treatment_effect` | `r t1_mean_treatment_effect` | `r t2_mean_treatment_effect` | `r t3_mean_treatment_effect` |
+| Confidence Interval Upper Bound | `r t0_lower_CI` | `r t1_lower_CI` | `r t2_lower_CI` | `r t3_lower_CI` | 
+| Confidence Interval Lower Bound | `r t0_upper_CI` | `r t1_upper_CI` | `r t2_upper_CI` | `r t3_upper_CI` | 
+| p-value | < 0.0001 | < 0.0001 | < 0.0001 | < 0.0001 | 
 
 The interaction with Time on the mean treatment effect is estimated to be 0.93, meaning that for each unit increase in Time, the mean treatment effect is estimated to decrease by 0.93, i.e. the mean treatment effect is estimated to decrease by 0.93 and therefore Stress Scores are estimated to increase by 0.93 on average every month which passes post Treatment for Nurses in the treatment group. The estimated mean effect of Time on Stress Scores is not statistically significant, with Time included in modelling because of the statistically significant interaction between Treatment and Time. 
 
@@ -485,50 +532,6 @@ The fixed effect of Gender is estimated to be 2.09, meaning that the estimated m
 The fixed effect of Hospital Size is estimated to be 1.98, meaning that the estimated mean Stress Score increases by 1.98 for Nurses in large Hospitals when compared to small Hospitals. 
 
 TODO: Work out how to calculate confidence intervals given Treatment Time interaction 
-
-```{r}
-
-# Calculate the confidence interval for the average treatment effect at Time 0 
-# given the interaction between Treatment and Time 
-t0 = emmeans(final_model, specs = ~ Treatment | Time, at = list(Time = 0))
-
-t0_estimates = confint(contrast(t0, method = "trt.vs.ctrl", ref = 1))
-
-t0_mean_treatment_effect = t0_estimates$estimate
-t0_lower_CI = t0_estimates$lower.CL
-t0_upper_CI = t0_estimates$upper.CL
-
-# Calculate the confidence interval for the average treatment effect at Time 1 
-# given the interaction between Treatment and Time 
-t1 = emmeans(final_model, specs = ~ Treatment | Time, at = list(Time = 1))
-
-t1_estimates = confint(contrast(t1, method = "trt.vs.ctrl", ref = 1))
-
-t1_mean_treatment_effect = t1_estimates$estimate
-t1_lower_CI = t1_estimates$lower.CL
-t1_upper_CI = t1_estimates$upper.CL
-
-# Calculate the confidence interval for the average treatment effect at Time 2 
-# given the interaction between Treatment and Time 
-t2 = emmeans(final_model, specs = ~ Treatment | Time, at = list(Time = 2))
-
-t2_estimates = confint(contrast(t2, method = "trt.vs.ctrl", ref = 1))
-
-t2_mean_treatment_effect = t2_estimates$estimate
-t2_lower_CI = t2_estimates$lower.CL
-t2_upper_CI = t2_estimates$upper.CL
-
-# Calculate the confidence interval for the average treatment effect at Time 3 
-# given the interaction between Treatment and Time 
-t3 = emmeans(final_model, specs = ~ Treatment | Time, at = list(Time = 3))
-
-t3_estimates = confint(contrast(t3, method = "trt.vs.ctrl", ref = 1))
-
-t3_mean_treatment_effect = t3_estimates$estimate
-t3_lower_CI = t3_estimates$lower.CL
-t3_upper_CI = t3_estimates$upper.CL
-
-```
 
 ## Word Count 
 

@@ -1,5 +1,5 @@
 ---
-title: "Title of your report"
+title: "Assessing the Impact of a Stress Reduction Treatment on Nurses Using a 3-Level Longitudinal Multisite Randomised Control Trial"
 author: "fmcv76"
 date: "02/04/24"
 output:
@@ -34,8 +34,9 @@ library(emmeans)
 ```{r}
 
 # Load data 
-mst_data_wide = read.csv("https://andygolightly.github.io/teaching/MATH43515/summative/alasdair.csv", 
-                    header = TRUE)
+filepath = "https://andygolightly.github.io/teaching/MATH43515/summative/alasdair.csv"
+
+mst_data_wide = read.csv(filepath, header = TRUE)
 
 # Preprocess long data 
 mst_data = mst_data_wide %>% 
@@ -81,7 +82,7 @@ mst_data_wide %>%
 
 ```
 
-```{r}
+```{r echo = FALSE}
 
 # Distribution of stress scores at month 1 by intervention group histogram 
 ggplot(data = mst_data_wide, aes(x = Responset1, fill = Treatment)) +
@@ -95,7 +96,7 @@ ggplot(data = mst_data_wide, aes(x = Responset1, fill = Treatment)) +
 
 ```
 
-```{r}
+```{r echo = FALSE}
 
 # Distribution of stress scores at month 2 by intervention group histogram 
 ggplot(data = mst_data_wide, aes(x = Responset2, fill = Treatment)) +
@@ -109,7 +110,7 @@ ggplot(data = mst_data_wide, aes(x = Responset2, fill = Treatment)) +
 
 ```
 
-```{r}
+```{r echo = FALSE}
 
 # Distribution of stress scores at month 3 by intervention group histogram 
 ggplot(data = mst_data_wide, aes(x = Responset3, fill = Treatment)) +
@@ -126,15 +127,15 @@ ggplot(data = mst_data_wide, aes(x = Responset3, fill = Treatment)) +
 A naive analysis of the above histograms indicates that there is an initial treatment effect and that this treament effect reduces over time. The Stress Score distributions of the control and treatment groups start away from each other with little overlap, and with each time step the treatment group distribution moves right along the Stress Score axis converging towards the control group distribution i.e. the treatment group Stress Scores increase over time post treatment with the control group remianing similar. 
 
 
-```{r}
+```{r echo = FALSE}
 
-# Distribution of stress scores over time by intervention group histogram 
+# Distribution of stress scores over time by intervention group 
 ggplot(data = mst_data, aes(x = Time, y = Response, colour = Treatment)) +
   stat_boxplot(geom = "errorbar", width = 0.4, coef = 1.5, position = position_dodge(width = 0.75)) +
   geom_boxplot() +
   scale_colour_manual(values = c("1" = "#EC4646", "0" = "#4646EC"), labels = c("1" = "Treatment Group", "0" = "Control Group"), guide_legend(title = "")) +
   scale_y_continuous(breaks = breaks_width(2)) +
-  labs(x = "Time (Months Since Treatment)", y = "Stress Score", title = "Distribution of Stress Scores Over Time by Intervention Group - Month 1") +
+  labs(x = "Time (Months Post Treatment)", y = "Stress Score", title = "Distribution of Stress Scores Over Time by Intervention Group") +
   theme(panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5), axis.text = element_text(color = "black", size = 10),
         axis.title = element_text(size = 12), plot.title = element_text(size = 12, face = "bold"))
 
@@ -413,20 +414,21 @@ There appears to be a small association between adjascent residuals so residuals
 
 set.seed(123)
 
-indices = sample(seq(1, nrow(mst_data), by = 1), replace = FALSE, prob = rep(1 / nrow(mst_data), nrow(mst_data)))
+indices = sample(seq(1, nrow(mst_data), by = 1), replace = FALSE, 
+                 prob = rep(1 / nrow(mst_data), nrow(mst_data)))
 
 mst_data_randomised = mst_data[order(indices), ]
 
 # Refit final model with randomised row order 
-final_model_randomised = lmer(formula = Response ~ 
+model_rand = lmer(formula = Response ~ 
                    1 + Treatment + Time + Treatment:Time + Experience + Gender + Size + 
                    (1 | Hospital) + 
                    (1 | Hospital : Nurse), 
                    data = mst_data_randomised)
 
-residuals_1_to_n_minus_1 = residuals(final_model_randomised)[1:(length(residuals(final_model_randomised)) - 1)]
+residuals_1_to_n_minus_1 = residuals(model_rand)[1:(length(residuals(model_rand)) - 1)]
 
-residuals_2_to_n = residuals(final_model_randomised)[2:length(residuals(final_model_randomised))]
+residuals_2_to_n = residuals(model_rand)[2:length(residuals(model_rand))]
 
 plot(residuals_1_to_n_minus_1, residuals_2_to_n)
 

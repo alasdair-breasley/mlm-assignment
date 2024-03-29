@@ -26,6 +26,8 @@ library(sjPlot)
 library(tidyverse)
 library(tinytex)
 library(wordcountaddin)
+library(pbkrtest)
+library(emmeans)
 
 ```
 
@@ -483,6 +485,50 @@ The fixed effect of Gender is estimated to be 2.09, meaning that the estimated m
 The fixed effect of Hospital Size is estimated to be 1.98, meaning that the estimated mean Stress Score increases by 1.98 for Nurses in large Hospitals when compared to small Hospitals. 
 
 TODO: Work out how to calculate confidence intervals given Treatment Time interaction 
+
+```{r}
+
+# Calculate the confidence interval for the average treatment effect at Time 0 
+# given the interaction between Treatment and Time 
+t0 = emmeans(final_model, specs = ~ Treatment | Time, at = list(Time = 0))
+
+t0_estimates = confint(contrast(t0, method = "trt.vs.ctrl", ref = 1))
+
+t0_mean_treatment_effect = t0_estimates$estimate
+t0_lower_CI = t0_estimates$lower.CL
+t0_upper_CI = t0_estimates$upper.CL
+
+# Calculate the confidence interval for the average treatment effect at Time 1 
+# given the interaction between Treatment and Time 
+t1 = emmeans(final_model, specs = ~ Treatment | Time, at = list(Time = 1))
+
+t1_estimates = confint(contrast(t1, method = "trt.vs.ctrl", ref = 1))
+
+t1_mean_treatment_effect = t1_estimates$estimate
+t1_lower_CI = t1_estimates$lower.CL
+t1_upper_CI = t1_estimates$upper.CL
+
+# Calculate the confidence interval for the average treatment effect at Time 2 
+# given the interaction between Treatment and Time 
+t2 = emmeans(final_model, specs = ~ Treatment | Time, at = list(Time = 2))
+
+t2_estimates = confint(contrast(t2, method = "trt.vs.ctrl", ref = 1))
+
+t2_mean_treatment_effect = t2_estimates$estimate
+t2_lower_CI = t2_estimates$lower.CL
+t2_upper_CI = t2_estimates$upper.CL
+
+# Calculate the confidence interval for the average treatment effect at Time 3 
+# given the interaction between Treatment and Time 
+t3 = emmeans(final_model, specs = ~ Treatment | Time, at = list(Time = 3))
+
+t3_estimates = confint(contrast(t3, method = "trt.vs.ctrl", ref = 1))
+
+t3_mean_treatment_effect = t3_estimates$estimate
+t3_lower_CI = t3_estimates$lower.CL
+t3_upper_CI = t3_estimates$upper.CL
+
+```
 
 ## Word Count 
 

@@ -71,6 +71,23 @@ colSums(is.na(mst_data))
 
 ## Introduction 
 
+Randomised Control Trials (RCTs) are used to assess the effectiveness of an intervention. Individuals are randomly assigned to either the treatment or control group and this aims to prevent systematic differences between intervention groups with regards to both observables and unobservables, preventing selection into treatment bias. Multisite Randomised Control Trials (MSRCTs) are RCTs which take place across multiple locations with individual still the unit of randomisation. MSRCTs can allow for a more diverse demographic of individuals studied by including multiple locations, increasing the generalisability of findings. In a healthcare setting this can help ensure that interventions are effective across different demographic groups and geographic locations. 
+
+This report will assess the results of a 3-level longitudinal MSRCT. Nurses from 20 Hospitals were randomly assigned to either the control or treatment group, with the treatment group receiving a stress reduction training intervention. Nurse Stress Scores were collected for 10 Nurses per Hospital, monthly post intervention for 3 months. It is not clear how the initial 20 Hospitals were selected from the wider population of Hospitals in the country so there may be selection into experiment bias present. It appears that all data intended to be collected is present, therefore there does not appear to be selection into observation bias present. 
+
+The variables collected as part of the MSRCT were:
+
+- __Time__ - Months post treatment. 
+- __Nurse__ - Anonymised Nurse ID. 
+- __Hospital__ - Anonymised Hospital ID. 
+- __Treatment__ - Flag for whether a Nurse is in the control (0) or treatment (1) group. 
+- __Experience__ - Nurse experience in years. 
+- __Gender__ - Flag for gender, male (0) or female (1). 
+- __Size__ - Flag for whether the A&E department is small (0) or large (1). 
+- __Response__ - Stress Score (0-100). 
+  
+__Research Question:__ Does the stress reduction treatment have a significant impact on Nurse Stress Scores and does this impact vary over Time? 
+
 __Summary Statistics__
 
 ```{r echo = FALSE}
@@ -391,7 +408,7 @@ plot(final_model)
 
 ```
 
-- __Linearity Assumption__ - Points spread roughly evenly above and below the 0 line with some visible lines assessed to be as a result of the data simulation process, therefore the assumption of a linear relationship between predictor variables and the response variable plausibly holds. 
+- __Linearity Assumption__ - Points spread roughly evenly above and below the 0 line with some visible lines assessed to be as a result of the discrete nature of Response, therefore the assumption of a linear relationship between predictor variables and the response variable plausibly holds. 
 - __Homoscedasticity Assumption__ - There is not an obvious change in spread for the residuals over the range of fitted values, therefore the assumption of residuals having constant variance across different values of the response variable plausibly holds. 
 
 ```{r}

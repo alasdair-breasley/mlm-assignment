@@ -170,6 +170,24 @@ mst_data = mst_data %>%
 
 ```
 
+## Methods 
+
+Multilevel models help solve the problem when analysing hierarchical data of lower-level-units belonging to the same upper-level-item being correlated. Multilevel models are appropriate for use in this case given the hierarchical structure of the data from the MSRCT. In this context multilevel models can provide more accurate estimates of treatment effects than models which ignore the hierarchical data structure by accounting for the correlation within clusters. The Intra-class Correlation Coefficient (ICC) is a measure of how much variance in the response can be explained by the hierarchical grouping structure of the data. The Variance Partition Coefficient (VPC) is a measure of how much of the ICC variance can be explained by each level in the grouping structure. Both ICC and VPC can be used to assess whether a grouping structure should be included in modelling. 
+
+The 3-level structure of the data is as follows: Time nested within Nurses nested within Hospitals. 
+
+- The covariate at the Time level is: Time Stamp. 
+- The covariates at the Nurse level are: Treatment, Experience, Gender. 
+- The covariate at the Hospital level is: Hospital Size. 
+
+A bottom-up modelling approach will be taken as follows:
+
+- Fit the empty model checking ICC/VPC values for whether to include hierarchical structure. 
+- Include lower level covariates and hypothesis test for their inclusion. 
+- Include higher level covariates and hypothesis test for their inclusion. 
+- Include random slopes and hypothesis test for their inclusion. 
+- Include interaction terms and hypothesis test for their inclusion. 
+
 ## Analysis 
 
 __3-Level Intercept-Only Model for Time within Nurses within Hospitals__ 

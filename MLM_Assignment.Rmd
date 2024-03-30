@@ -193,7 +193,7 @@ __3-Level Intercept-Only Model for Time within Nurses within Hospitals__
 
 ```{r}
 
-# Fit intercept-only model for nurses nested within hospitals 
+# Fit intercept-only model for time nested within nurses nested within hospitals 
 hospital_nurse_intercept_only_model = lmer(formula = Response ~ 
                                        1 + (1 | Hospital) + 
                                        (1 | Hospital : Nurse), 
@@ -225,13 +225,11 @@ vpc_hospital = round(100 * sigv / totalvar, 2)
 
 vpc_nurse = round(100 * sigu / totalvar, 2)
 
-icc_hospital = round(100 * sigv / totalvar, 2)
-
-icc_nurse = round(100 * (sigu + sigv) / totalvar, 2)
+icc = round(100 * (sigu + sigv) / totalvar, 2)
 
 ```
 
-Overall, there is a `r icc_nurse`% ICC value and therefore `r icc_nurse`% of the variation in Stress Scores can be explained by the Time nested within Nurses nested within Hospitals grouping structure. There is a `r vpc_nurse`% Response variation (VPC) at the Nurse level and `r vpc_hospital`% VPC at the Hospital level, Therefore `r vpc_nurse`% of the variation in Stress Scores can be explained by the Nurses grouping structure and `r vpc_hospital`% of the variation in Stress Scores can be explained by the Hospitals grouping structure. The high variability between Nurses intuitively makes sense given that measurements pertaining to an individual Nurse should exhibit larger correlation than measurements from different Nurses. Therefore, the Nurse grouping structure should be include in modelling. The `r vpc_hospital`% variability between Hospitals is a relatively large VPC value in a healthcare setting and therefore the Hopsital grouping structure should be included in modelling. 
+The ICC is `r icc`% meaning `r icc`% of the variation in Stress Scores can be explained by the Time nested within Nurses nested within Hospitals grouping structure. The VPC at the Nurse level is `r vpc_nurse`% and the VPC at the Hospital level is `r vpc_hospital`%, meaning `r vpc_nurse`% of the variation in Stress Scores can be explained by the Nurses grouping structure and `r vpc_hospital`% by the Hospitals grouping structure. The high within Nurse correlation makes sense given that measurements pertaining to an individual Nurse should exhibit larger correlation than measurements from different Nurses. Therefore, the Nurse grouping structure should be include in modelling. The `r vpc_hospital`% variability between Hospitals is a relatively large VPC value in a healthcare setting and therefore the Hospital grouping structure should be included in modelling. 
 
 __3-Level Random Intercept Model with Time Stamp Time Level Covariate__
 
@@ -325,7 +323,7 @@ anova(ri_Time_model, ri_Time_Treatment_model,
 
 ```
 
-1. The null hypothesis is rejected and Treatment is needed, and would be included anyway given it is effect being estimated. 
+1. The null hypothesis is rejected and Treatment is needed, and should be included regardless given it is the effect being estimated. 
 
 2. The null hypothesis is rejected and Experience is needed. 
 
@@ -389,11 +387,7 @@ ranova(ri_Time_slope_nurseCovs_Size_model)
 
 The null hypothesis is retained and the random slope for Time is not needed. 
 
-TODO: Explain which random slopes were tried? 
-
-TODO: Explain which interactions were tried? 
-
-__Comparison of 3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate with 3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate with Interaction Between Treatment and Time__
+__3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate with Interaction Between Treatment and Time__
 
 ```{r}
 
@@ -409,6 +403,13 @@ final_model = lmer(formula = Response ~
 summary(final_model)
 
 ```
+
+The interaction between Treatment and Time is statistically significant. 
+
+Time is not statistically significant but should be retained given the statistically significant Treatment Time interaction. 
+
+__Comparison of 3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate with 3-Level Random Intercept Model with Time Stamp Time Level Covariate, Nurse Level Covariates, and Hospital Size Hospital Level Covariate with Interaction Between Treatment and Time__
+
 Test the null hypothesis that the interaction between Treatment and Time is 0 against an alternative that it is not 0. 
 
 ```{r}
@@ -492,7 +493,7 @@ qqline(ranef(final_model)$Hospital[, 1], col = "red")
 
 ```
 
-- __Normality Assumption - Random Effects - Hospitals__ - The random effects for Hospital mostly fit well with the theoretical quantiles of a normal distribution with a small deviation at each tail, therefore the assumption of normally distributed random effects plausibly holds. 
+- __Normality Assumption - Random Effects - Hospitals__ - The random effects for Hospitals mostly fit well with the theoretical quantiles of a normal distribution with a small deviation at each tail, therefore the assumption of normally distributed random effects plausibly holds. 
 
 ```{r}
 
@@ -552,7 +553,7 @@ t3_upper_CI = sprintf("%.2f", round(t3_estimates$upper.CL, 2))
 
 ```
 
-The mean treatment effect is estimated to be -5.41 at a Time of 0, meaning that Stress Scores are estimated to be on average 5.41 points lower for Nurses who have received the treatment than those who have not, immediately after treatment. Given that the data does not cover Stress Scores at a Time of 0, this estimate is an extrapolation and should be used with caution. The estimated 95% confidence interval ranges from -6.22 to -4.59 meaning that we are 95% confident that the true effect of the intervention on Stress Scores lies within this range, after controlling for Time, the interaction between Treatment and Time, Experience, Gender, Hospital Size, random effects by Hospital and by Nurses within Hospitals. The treatment effect is statistically significant with a p value of < 0.0001. The below table details the estimated treatment effect at each Time value given the interaction between Treatment and Time. 
+The mean treatment effect is estimated to be -5.41 at a Time of 0, meaning that Stress Scores are estimated to be on average 5.41 points lower for Nurses who have received the treatment than those who have not, immediately after treatment. Given that the data does not cover Stress Scores at a Time of 0, this estimate is an extrapolation and should be used with caution. The estimated 95% confidence interval ranges from -6.22 to -4.59 meaning that we are 95% confident that the true effect of the intervention on Stress Scores lies within this range, after controlling for Time, the interaction between Treatment and Time, Experience, Gender, Hospital Size, random effects by Hospital and by Nurses within Hospitals. The treatment effect is statistically significant with a p value of < 0.0001. The below table details the estimated treatment effect at each Time given the interaction between Treatment and Time. 
 
 | Time (Months Post Treatment) | Time 0 | Time 1 | Time 2 | Time 3 | 
 |-------|-------|-------|-------|-------|
@@ -561,15 +562,13 @@ The mean treatment effect is estimated to be -5.41 at a Time of 0, meaning that 
 | Confidence Interval Lower Bound | `r t0_upper_CI` | `r t1_upper_CI` | `r t2_upper_CI` | `r t3_upper_CI` | 
 | p-value | < 0.0001 | < 0.0001 | < 0.0001 | < 0.0001 | 
 
-The interaction with Time on the mean treatment effect is estimated to be 0.93, meaning that for each unit increase in Time, the mean treatment effect is estimated to decrease by 0.93, i.e. the mean treatment effect is estimated to decrease by 0.93 and therefore Stress Scores are estimated to increase by 0.93 on average every month which passes post Treatment for Nurses in the treatment group. The estimated mean effect of Time on Stress Scores is not statistically significant, with Time included in modelling because of the statistically significant interaction between Treatment and Time. 
+The interaction with Time on the mean treatment effect is estimated to be 0.93, meaning that for each unit increase in Time, the mean treatment effect is estimated to decrease by 0.93, i.e. Stress Scores are estimated to increase by 0.93 on average every month which passes post Treatment for Nurses in the treatment group. The estimated mean effect of Time on Stress Scores is not statistically significant, with Time included in modelling because of the statistically significant Treatment Time interaction. 
 
 The fixed effect of Experience is estimated to be -0.11, meaning that for every year of Experience a Nurse has, the estimated mean Stress Score decreases by 0.11. 
 
 The fixed effect of Gender is estimated to be 2.09, meaning that the estimated mean Stress Score increases by 2.09 for female Nurses when compared to male Nurses. 
 
 The fixed effect of Hospital Size is estimated to be 1.98, meaning that the estimated mean Stress Score increases by 1.98 for Nurses in large Hospitals when compared to small Hospitals. 
-
-TODO: Work out how to calculate confidence intervals given Treatment Time interaction 
 
 ```{r echo = FALSE}
 
@@ -597,8 +596,6 @@ ggplot(mst_data_visualisation_subset, aes(Time, Response)) +
 
 ```
 
-Example of small hospital. 
-
 ```{r echo = FALSE}
 
 # Subset to only include hospital 16 data 
@@ -620,7 +617,11 @@ ggplot(mst_data_visualisation_subset, aes(Time, Response)) +
 
 ```
 
-Example of big hospital. 
+The above figures visualise the random effects of Nurses within Hospitals 9 and 16. In the treatment groups Stress Score increases with Time in contrast to the control groups. Hospital 9 is small and Hospital 16 is big and the overall increased Stress Scores in big Hospitals can be seen between the two figures. 
+
+## Discussion 
+
+__Limitations__
 
 ## Word Count 
 

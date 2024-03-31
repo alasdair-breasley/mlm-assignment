@@ -1,5 +1,5 @@
 ---
-title: "Assessing the Impact of a Stress Reduction Treatment on Nurses Using a 3-Level Longitudinal Multisite Randomised Control Trial"
+title: "Assessing the Impact of a Stress Reduction Treatment on Nurses Using a 3-Level (Longitudinal) Multisite Randomised Control Trial"
 author: "fmcv76"
 date: "02/04/24"
 output:
@@ -88,7 +88,7 @@ colSums(is.na(mst_data))
 
 Randomised Control Trials (RCTs) are used to assess the effectiveness of an intervention. Individuals are randomly assigned to either the treatment or control group and this aims to prevent systematic differences between intervention groups with regards to both observables and unobservables, preventing selection into treatment bias. Multisite Randomised Control Trials (MSRCTs) are RCTs which take place across multiple locations with individuals still the unit of randomisation. MSRCTs can allow for a more diverse demographic of individuals studied by including multiple locations, increasing the generalisability of findings. In a healthcare setting this can help ensure that interventions are effective across different demographic groups and geographic locations. 
 
-This report will assess the results of a 3-level longitudinal MSRCT. Nurses from 20 Hospitals were randomly assigned to either the control or treatment group, with the treatment group receiving a stress reduction training intervention. Nurse Stress Scores were collected for 10 Nurses per Hospital, monthly for 3 months post intervention. 
+This report will assess the results of a 3-level (longitudinal) MSRCT. Nurses from 20 Hospitals were randomly assigned to either the control or treatment group, with the treatment group receiving a stress reduction training intervention. Nurse Stress Scores were collected for 10 Nurses per Hospital, monthly for 3 months post intervention. 
 
 The variables collected as part of the MSRCT were:
 
@@ -174,8 +174,6 @@ ggplot(data = mst_data, aes(x = Time, y = Response, colour = Treatment)) +
 
 A naive analysis of the above plot indicates that the median Stress Score in the treatment group is ~4.5 lower than the control group one month after treatment, with this reducing to ~4 and ~2.5 lower after two and three months respectively. The treatment group Stress Scores increase over time post treatment converging towards the control group at an increase in median Stress Score of ~1 per month. 
 
-TODO: Add scatter plots and correlations? 
-
 ```{r echo = FALSE}
 
 # Make time numeric for modelling 
@@ -246,7 +244,7 @@ icc = round(100 * (sigu + sigv) / totalvar, 2)
 
 ```
 
-The ICC is `r icc`% meaning `r icc`% of the variation in Stress Scores can be explained by the Time nested within Nurses nested within Hospitals grouping structure. The VPC at the Nurse level is `r vpc_nurse`% and the VPC at the Hospital level is `r vpc_hospital`%, meaning `r vpc_nurse`% of the variation in Stress Scores can be explained by the Nurses grouping structure and `r vpc_hospital`% by the Hospitals grouping structure. The high within Nurse correlation makes sense given that measurements pertaining to an individual Nurse should exhibit larger correlation than measurements from different Nurses. Therefore, the Nurse grouping structure should be include in modelling. The `r vpc_hospital`% variability between Hospitals is a relatively large VPC value in a healthcare setting and therefore the Hospital grouping structure should be included in modelling. 
+The ICC is `r icc`% meaning `r icc`% of the variation in Stress Scores can be explained by the Nurses nested within Hospitals grouping structure. The VPC at the Nurse level is `r vpc_nurse`% and the VPC at the Hospital level is `r vpc_hospital`%, meaning `r vpc_nurse`% of the variation in Stress Scores can be explained by the Nurses grouping structure and `r vpc_hospital`% by the Hospitals grouping structure. The high within Nurse correlation makes sense given that measurements pertaining to an individual Nurse should exhibit larger correlation than measurements from different Nurses. Therefore, the Nurse grouping structure should be include in modelling. The `r vpc_hospital`% variability between Hospitals is a relatively large VPC value in a healthcare setting and therefore the Hospital grouping structure should be included in modelling. 
 
 __`r title_2`__
 
@@ -581,7 +579,7 @@ The mean treatment effect is estimated to be -5.41 at Time 0, meaning that Stres
 | Confidence Interval Lower Bound | `r t0_upper_CI` | `r t1_upper_CI` | `r t2_upper_CI` | `r t3_upper_CI` | 
 | p-value | < 0.0001 | < 0.0001 | < 0.0001 | < 0.0001 | 
 
-The interaction with Time on the mean treatment effect is estimated to be 0.93, meaning that for each unit increase in Time, the mean treatment effect is estimated to decrease by 0.93, i.e. Stress Scores are estimated to increase by 0.93 on average every month which passes post Treatment for Nurses in the treatment group. The estimated mean effect of Time on Stress Scores is not statistically significant, with Time included in modelling because of the statistically significant Treatment Time interaction. 
+The interaction with Time on the mean treatment effect is estimated to be 0.93, meaning that for each unit increase in Time, the mean treatment effect is estimated to decrease by 0.93, i.e. Stress Scores are estimated to increase by 0.93 on average every month which passes post treatment for Nurses in the treatment group. The estimated mean effect of Time on Stress Scores is not statistically significant, with Time included in modelling because of the statistically significant Treatment Time interaction. 
 
 ```{r echo = FALSE, fig.height = 4}
 
@@ -630,13 +628,13 @@ ggplot(mst_data_visualisation_subset, aes(Time, Response)) +
 
 ```
 
-The above figures visualise the random effects of Nurses within Hospitals 9 and 16. In the treatment groups Stress Score increases with Time in contrast to the control groups. Hospital 9 is small and Hospital 16 is big and the overall increased Stress Scores in big Hospitals can be seen between the two figures. 
+The above figures visualise the random effects of Nurses within Hospitals 9 and 16. In the treatment groups Stress Scores are lower and increase with Time in contrast to the control groups. Hospital 9 is small and Hospital 16 is big and the overall increased Stress Scores in big Hospitals can be seen between the two figures. 
 
 ## Discussion 
 
 __Research Question__
 
-In regards to the research question: Does the stress reduction treatment have a significant impact on Nurse Stress Scores and does this impact vary over Time?, the estimated mean intervention effect is -5.41 at Time 0, meaning that Stress Scores are estimated to be on average 5.41 points lower for Nurses who have received the treatment than those who have not, immediately after treatment. This effect is statistically significant. Regarding the impact over time, for every month which passes, mean intervention effect is estimated to decrease by 0.93 points, meaning Stress Scores are estimated to increase by 0.93 on average every month which passes post Treatment for Nurses in the treatment group. This effect is statistically significant. Both the impact of the treatment and the impact of the treatment over time can be be seen in the two illustrative figures above and the two tables below. 
+In regards to the research question: Does the stress reduction treatment have a significant impact on Nurse Stress Scores and does this impact vary over Time?, the estimated mean intervention effect is -5.41 at Time 0, meaning that Stress Scores are estimated to be on average 5.41 points lower for Nurses who have received the treatment than those who have not, immediately after treatment. This effect is statistically significant. Regarding the impact over time, for every month which passes, the mean intervention effect is estimated to decrease by 0.93 points, meaning Stress Scores are estimated to increase by 0.93 on average every month which passes post treatment for Nurses in the treatment group. This effect is statistically significant. Both the impact of the treatment and the impact of the treatment over time can be be seen in the two example figures above and the two tables below. 
 
 | Time (Months Post Treatment) | Time 0 | Time 1 | Time 2 | Time 3 | 
 |:-------|-------:|-------:|-------:|-------:|
@@ -671,10 +669,6 @@ There are several limitations to the study, including:
 - It is questionable whether it is practical or ethical to administer the treatment to individual Nurses in Hospitals but not others. 
 - It is not clear how the initial 20 Hospitals were selected from the wider population of Hospitals in the country so there may be selection into experiment bias present. 
 - The study is only as reliable as the measurement technique used to capture Nurse Stress Scores, for which the reliability is unknown. 
-
-TODO: Check increases vs decreases terminology given negative mean treatment effect. 
-
-TODO: Check capitalisation. 
 
 ## Word Count 
 

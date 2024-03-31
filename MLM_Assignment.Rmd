@@ -553,22 +553,16 @@ t3_upper_CI = sprintf("%.2f", round(t3_estimates$upper.CL, 2))
 
 ```
 
-The mean treatment effect is estimated to be -5.41 at a Time of 0, meaning that Stress Scores are estimated to be on average 5.41 points lower for Nurses who have received the treatment than those who have not, immediately after treatment. Given that the data does not cover Stress Scores at a Time of 0, this estimate is an extrapolation and should be used with caution. The estimated 95% confidence interval ranges from -6.22 to -4.59 meaning that we are 95% confident that the true effect of the intervention on Stress Scores lies within this range, after controlling for Time, the interaction between Treatment and Time, Experience, Gender, Hospital Size, random effects by Hospital and by Nurses within Hospitals. The treatment effect is statistically significant with a p value of < 0.0001. The below table details the estimated treatment effect at each Time given the interaction between Treatment and Time. 
+The mean treatment effect is estimated to be -5.41 at Time 0, meaning that Stress Scores are estimated to be on average 5.41 points lower for Nurses who have received the treatment than those who have not, immediately after treatment. Given that the data does not cover Stress Scores at Time 0, this estimate is an extrapolation and should be used with caution. The estimated 95% confidence interval ranges from -6.22 to -4.59 meaning that we are 95% confident that the true effect of the intervention on Stress Scores lies within this range, after controlling for Time, the interaction between Treatment and Time, Experience, Gender, Hospital Size, random effects by Hospital and by Nurses within Hospitals. The treatment effect is statistically significant with a p value of < 0.0001. The below table details the estimated treatment effect at each Time given the interaction between Treatment and Time. 
 
 | Time (Months Post Treatment) | Time 0 | Time 1 | Time 2 | Time 3 | 
-|-------|-------|-------|-------|-------|
+|:-------|-------:|-------:|-------:|-------:|
 | Average Treatment Effect | `r t0_mean_treatment_effect` | `r t1_mean_treatment_effect` | `r t2_mean_treatment_effect` | `r t3_mean_treatment_effect` |
 | Confidence Interval Upper Bound | `r t0_lower_CI` | `r t1_lower_CI` | `r t2_lower_CI` | `r t3_lower_CI` | 
 | Confidence Interval Lower Bound | `r t0_upper_CI` | `r t1_upper_CI` | `r t2_upper_CI` | `r t3_upper_CI` | 
 | p-value | < 0.0001 | < 0.0001 | < 0.0001 | < 0.0001 | 
 
 The interaction with Time on the mean treatment effect is estimated to be 0.93, meaning that for each unit increase in Time, the mean treatment effect is estimated to decrease by 0.93, i.e. Stress Scores are estimated to increase by 0.93 on average every month which passes post Treatment for Nurses in the treatment group. The estimated mean effect of Time on Stress Scores is not statistically significant, with Time included in modelling because of the statistically significant Treatment Time interaction. 
-
-The fixed effect of Experience is estimated to be -0.11, meaning that for every year of Experience a Nurse has, the estimated mean Stress Score decreases by 0.11. 
-
-The fixed effect of Gender is estimated to be 2.09, meaning that the estimated mean Stress Score increases by 2.09 for female Nurses when compared to male Nurses. 
-
-The fixed effect of Hospital Size is estimated to be 1.98, meaning that the estimated mean Stress Score increases by 1.98 for Nurses in large Hospitals when compared to small Hospitals. 
 
 ```{r echo = FALSE}
 
@@ -621,7 +615,47 @@ The above figures visualise the random effects of Nurses within Hospitals 9 and 
 
 ## Discussion 
 
+__Research Question__
+
+In regards to the research question: Does the stress reduction treatment have a significant impact on Nurse Stress Scores and does this impact vary over Time?, the estimated mean intervention effect is -5.41 at Time 0, meaning that Stress Scores are estimated to be on average 5.41 points lower for Nurses who have received the treatment than those who have not, immediately after treatment. This effect is statistically significant. Regarding the impact over time, for every month which passes, mean intervention effect is estimated to decrease by 0.93 points, meaning Stress Scores are estimated to increase by 0.93 on average every month which passes post Treatment for Nurses in the treatment group. This effect is statistically significant. Both the impact of the treatment and the impact of the treatment over time can be be seen in the two illustrative figures above and the two tables below. 
+
+| Time (Months Post Treatment) | Time 0 | Time 1 | Time 2 | Time 3 | 
+|:-------|-------:|-------:|-------:|-------:|
+| Average Treatment Effect | `r t0_mean_treatment_effect` | `r t1_mean_treatment_effect` | `r t2_mean_treatment_effect` | `r t3_mean_treatment_effect` |
+| Confidence Interval Upper Bound | `r t0_lower_CI` | `r t1_lower_CI` | `r t2_lower_CI` | `r t3_lower_CI` | 
+| Confidence Interval Lower Bound | `r t0_upper_CI` | `r t1_upper_CI` | `r t2_upper_CI` | `r t3_upper_CI` | 
+| p-value | < 0.0001 | < 0.0001 | < 0.0001 | < 0.0001 | 
+
+| Group | Time | Mean Stress Score | 
+|:-------|--------:|-------:| 
+| Control | 1 | 41.2 | 
+| Control | 2 | 41.6 | 
+| Control | 3 | 41.4 | 
+| Treatment | 1 | 36.9 | 
+| Treatment | 2 | 38.2 |
+| Treatment | 3 | 38.9 | 
+
+The estimated mean treatment effects are relatively large as a proportion of mean Stress Scores initially, however the estimated mean treatment effect reduces quickly over time. A full Cost-Benefit Analysis will need to be undertaken to assess whether the cost of the treatment is worth the short-term Stress Score reduction, given that treatment might need to be repeated frequently to reduce Stress Scores in the long-term. 
+
+__Fixed Effects__
+
+The fixed effect of Experience is estimated to be -0.11, meaning that for every year of Experience a Nurse has, the estimated mean Stress Score decreases by 0.11. 
+
+The fixed effect of Gender is estimated to be 2.09, meaning that the estimated mean Stress Score increases by 2.09 for female Nurses when compared to male Nurses. 
+
+The fixed effect of Hospital Size is estimated to be 1.98, meaning that the estimated mean Stress Score increases by 1.98 for Nurses in large Hospitals when compared to small Hospitals. 
+
 __Limitations__
+
+There are several limitations to the study, including:
+
+- It is questionable whether it is practical or ethical to administer the treatment to individual Nurses in Hospitals but not others. 
+- It is not clear how the initial 20 Hospitals were selected from the wider population of Hospitals in the country so there may be selection into experiment bias present. 
+- The study is only as reliable as the measurement technique used to capture Nurse Stress Scores, for which the reliability is unknown. 
+
+TODO: Check increases vs decreases terminology given negative mean treatment effect. 
+
+TODO: Check capitalisation. 
 
 ## Word Count 
 

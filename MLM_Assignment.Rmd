@@ -628,7 +628,7 @@ ggplot(mst_data_visualisation_subset, aes(Time, Response)) +
 
 ```
 
-The above figures visualise the random effects of Nurses within Hospitals 9 and 16. In the treatment groups Stress Scores are lower and increase with Time in contrast to the control groups. Hospital 9 is small and Hospital 16 is big and the overall increased Stress Scores in big Hospitals can be seen between the two figures. 
+The above figures visualise the random effects of Nurses within Hospitals 9 and 16, with red lines indicating naive models fit only on the data shown without considering the hierarchical data structure. In the treatment groups Stress Scores are lower and increase with Time in contrast to the control groups. Hospital 9 is small and Hospital 16 is big and the overall increased Stress Scores in big Hospitals can be seen between the two figures. 
 
 ## Discussion 
 

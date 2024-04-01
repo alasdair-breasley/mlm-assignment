@@ -245,9 +245,9 @@ var_summary = as.data.frame(VarCorr(hospital_nurse_intercept_only_model))
 
 sig = var_summary$vcov[3]  # Residual variance 
 
-sigv = var_summary$vcov[2] # RE variance for school 
+sigv = var_summary$vcov[2] # RE variance for Hospital  
 
-sigu = var_summary$vcov[1] # RE variance for class 
+sigu = var_summary$vcov[1] # RE variance for Nurse  
 
 totalvar = sum(var_summary$vcov) # Total variance 
 

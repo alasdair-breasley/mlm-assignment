@@ -1248,6 +1248,24 @@
       ],
       "Hash": "0e17cb609f27608c8312a822d7d85cc2"
     },
+    "pbkrtest": {
+      "Package": "pbkrtest",
+      "Version": "0.5.2",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "MASS",
+        "Matrix",
+        "R",
+        "broom",
+        "dplyr",
+        "lme4",
+        "methods",
+        "numDeriv",
+        "parallel"
+      ],
+      "Hash": "3b5b99f4d3f067bb9c1d59317d071370"
+    },
     "performance": {
       "Package": "performance",
       "Version": "0.10.9",
